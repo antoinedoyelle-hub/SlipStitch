@@ -1846,21 +1846,29 @@
 
 
     // ─── PHOTOS ──────────────────────────────────────────────────────────────────
-    document.getElementById('ph-inp').onchange = function (e) {
-      const files = Array.from(e.target.files); if (!files.length) return;
-      Promise.all(files.map(f => new Promise(res => { const r = new FileReader(); r.onload = ev => compressImg(ev.target.result, 800, 800, 0.7).then(res); r.readAsDataURL(f); }))).then(res => {
-        nProj.photos = [...(nProj.photos || []), ...res];
-        const list = document.querySelector('.mphlist');
-        if (list) {
-          const phHTML = nProj.photos.map((ph, i) => `<div class="mphitem"><img src="${ph}" class="mphimg" onclick="openLB('${ph}')"><button class="mphdel" onclick="removePhoto(${i})">✕</button></div>`).join('');
-          list.innerHTML = phHTML + `<div class="addph" onclick="document.getElementById('ph-inp').click()">+</div>`;
-        }
-      });
-      e.target.value = '';
-    };
-    document.getElementById('ph-fin').onchange = function (e) {
-      const f = e.target.files[0]; if (!f) return;
-      const r = new FileReader(); r.onload = ev => {
+    document.getElementById('ph-inp').onchange=function(e){
+  const files=Array.from(e.target.files);if(!files.length){e.target.value='';return;}
+  Promise.all(files.map(f=>new Promise((res,rej)=>{
+    const r=new FileReader();
+    r.onload=ev=>compressImg(ev.target.result,800,800,0.7).then(res).catch(rej);
+    r.onerror=()=>rej(new Error('read error'));
+    r.readAsDataURL(f);
+  }))).catch(()=>{e.target.value='';}).then(res=>{
+    if(!res)return;
+    nProj.photos=[...(nProj.photos||[]),...res];
+    const list=document.querySelector('.mphlist');
+    if(list){
+      const phHTML=nProj.photos.map((ph,i)=>`<div class="mphitem"><img src="${ph}" class="mphimg" onclick="openLB('${ph}')"><button class="mphdel" onclick="removePhoto(${i})">✕</button></div>`).join('');
+      list.innerHTML=phHTML+`<div class="addph" onclick="document.getElementById('ph-inp').click()">+</div>`;
+    }
+    e.target.value='';
+  });
+};
+    document.getElementById('ph-fin').onchange=function(e){
+  const f=e.target.files[0];if(!f){e.target.value='';return;}
+  const r=new FileReader();
+  r.onerror=()=>{e.target.value='';};
+  r.onload=ev=>{
         compressImg(ev.target.result, 800, 800, 0.7).then(compressed => {
           if (curP) { curP.finishedPhoto = compressed; save(); }
           const a = document.getElementById('bpharea');
