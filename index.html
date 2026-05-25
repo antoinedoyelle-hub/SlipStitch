@@ -1515,8 +1515,9 @@
 
   <canvas class="cnf" id="cnf"></canvas>
   <canvas class="hrt" id="hrt"></canvas>
-  <input type="file" id="ph-inp" accept="image/*" multiple style="display:none">
-  <input type="file" id="ph-fin" accept="image/*" style="display:none">
+  <input type="file" id="ph-inp" accept="image/jpeg,image/png,image/gif,image/webp,image/heic" multiple
+    style="display:none">
+  <input type="file" id="ph-fin" accept="image/jpeg,image/png,image/gif,image/webp,image/heic" style="display:none">
   <div id="toast" class="toast"></div>
   <div id="lbx" class="lbx"><button class="lbxc" id="lbxc">✕</button><img id="lbxi" src=""></div>
 
@@ -1554,7 +1555,7 @@
 
   <div id="create-project" class="screen">
     <div class="hdr">
-      <button class="bk" onclick="leaveCreate()">← Retour</button>
+      <button class="bk" onclick="leaveCreate()">← <span id="lback">Retour</span></button>
       <span class="htitle" id="ctitle">Nouveau projet</span>
     </div>
     <div class="sbody" id="cbody"></div>
@@ -1562,23 +1563,23 @@
 
   <div id="bravo-screen" class="screen">
     <div class="hdr">
-      <button class="bk" onclick="showScreen('projects')">← Projets</button>
-      <span class="htitle">Terminé 🎉</span>
+      <button class="bk" onclick="showScreen('projects')">← <span id="lprojs2">Projets</span></button>
+      <span class="htitle" id="lfinished">Terminé 🎉</span>
     </div>
     <div class="bwrap">
       <div class="bemoji" id="bemoji">🧶</div>
       <div class="btitle" id="btitle">Bravo !</div>
       <div class="bsub" id="bsub"></div>
       <div class="bpharea" id="bpharea"></div>
-      <button class="bp" style="width:220px;" onclick="showScreen('projects')">← Retour aux projets</button>
-      <button class="bs" style="width:220px;" onclick="doRestart()">Recommencer</button>
+      <button class="bp" style="width:220px;" id="lbackproj" onclick="showScreen('projects')">← </button>
+      <button class="bs" style="width:220px;" id="lrestart" onclick="doRestart()"></button>
     </div>
   </div>
 
   <div id="settings" class="screen">
     <div class="hdr">
-      <button class="bk" onclick="showScreen('home')">← Accueil</button>
-      <span class="htitle">⚙️ Paramètres</span>
+      <button class="bk" onclick="showScreen('home')">← <span class="lhometxt"></span></button>
+      <span class="htitle" id="lsett">⚙️ Paramètres</span>
     </div>
     <div class="sbody" id="setbody"></div>
   </div>
@@ -1598,39 +1599,21 @@
   <script>
     // ─── DATA ────────────────────────────────────────────────────────────────────
     const COLORS = [
-      '#f0f0a0', '#e8e87a', '#d0d040', '#a0a010', '#606000',
-      '#d0f0a0', '#b0e060', '#80c820', '#508010', '#284000',
-      '#a0f0a0', '#7ae8a0', '#40c860', '#208040', '#0a4020',
-      '#a0f0e0', '#60d8b8', '#20b890', '#108060', '#084030',
-      '#a0e0f0', '#60c8e8', '#20a0c8', '#107090', '#084050',
-      '#a0c8f0', '#7ab4e8', '#4090d0', '#2060a8', '#103060',
-      '#c0c8f0', '#9090e0', '#7a8ae8', '#4050c8', '#202880',
-      '#e8d0f0', '#c8a0e8', '#a87ad4', '#7a4ab8', '#4a2080',
-      '#f8d0d8', '#f0a0b8', '#e87ad4', '#c040a0', '#8b2070',
-      '#f0c0b0', '#e89090', '#e87a7a', '#d04040', '#a02020',
-      '#f0c8a0', '#e8a07a', '#e07050', '#c84030', '#8b2020',
-      '#f0d0a0', '#e8c07a', '#d4a030', '#a07020', '#6a4010',
-      '#f0e0a0', '#e8d07a', '#d0a830', '#a07820', '#604810',
-      '#e8e0d0', '#d4b896', '#c9a96e', '#b8864a', '#8b5e3c',
-      '#d0d0d0', '#b0b0b0', '#888888', '#505050', '#282828'
+      '#e8e87a', '#80c820', '#7ae8a0', '#20b890', '#7ab4e8',
+      '#4050c8', '#c8a0e8', '#e87ad4', '#e87a7a', '#e07050',
+      '#e8c07a', '#d0a830', '#c9a96e', '#8b5e3c', '#888888'
     ];
     const CNAMES = {
-      '#f0f0a0': 'Jaune pâle', '#e8e87a': 'Jaune citron', '#d0d040': 'Jaune vif', '#a0a010': 'Jaune moutarde', '#606000': 'Kaki doré',
-      '#d0f0a0': 'Vert anis', '#b0e060': 'Chartreuse', '#80c820': 'Vert lime', '#508010': 'Olive', '#284000': 'Kaki',
-      '#a0f0a0': 'Vert pâle', '#7ae8a0': 'Vert menthe', '#40c860': 'Vert vif', '#208040': 'Vert', '#0a4020': 'Vert profond',
-      '#a0f0e0': 'Menthe pâle', '#60d8b8': 'Turquoise', '#20b890': 'Vert émeraude', '#108060': 'Vert forêt', '#084030': 'Vert sombre',
-      '#a0e0f0': 'Bleu glacier', '#60c8e8': 'Cyan', '#20a0c8': 'Bleu canard', '#107090': 'Sarcelle', '#084050': 'Bleu pétrole',
-      '#a0c8f0': 'Bleu ciel pâle', '#7ab4e8': 'Bleu ciel', '#4090d0': 'Bleu vif', '#2060a8': 'Bleu marine', '#103060': 'Marine profond',
-      '#c0c8f0': 'Bleu lavande', '#9090e0': 'Bleu pervenche', '#7a8ae8': 'Bleu lavande vif', '#4050c8': 'Bleu roi', '#202880': 'Bleu nuit',
-      '#e8d0f0': 'Lavande pâle', '#c8a0e8': 'Lilas', '#a87ad4': 'Violet moyen', '#7a4ab8': 'Violet', '#4a2080': 'Indigo',
-      '#f8d0d8': 'Rose pâle', '#f0a0b8': 'Rose vif', '#e87ad4': 'Fuchsia', '#c040a0': 'Magenta', '#8b2070': 'Prune',
-      '#f0c0b0': 'Rose poudré', '#e89090': 'Rose doux', '#e87a7a': 'Rose corail', '#d04040': 'Rouge', '#a02020': 'Rouge sombre',
-      '#f0c8a0': 'Pêche', '#e8a07a': 'Abricot', '#e07050': 'Terracotta', '#c84030': 'Brique', '#8b2020': 'Bordeaux',
-      '#f0d0a0': 'Crème', '#e8c07a': 'Jaune miel', '#d4a030': 'Ocre', '#a07020': 'Ambre', '#6a4010': 'Terre',
-      '#f0e0a0': 'Vanille', '#e8d07a': 'Sable', '#d0a830': 'Or', '#a07820': 'Bronze', '#604810': 'Brun doré',
-      '#e8e0d0': 'Ivoire', '#d4b896': 'Lin', '#c9a96e': 'Beige doré', '#b8864a': 'Caramel', '#8b5e3c': 'Brun chaud',
-      '#d0d0d0': 'Gris clair', '#b0b0b0': 'Gris', '#888888': 'Gris moyen', '#505050': 'Gris foncé', '#282828': 'Anthracite'
+      '#e8e87a': 'Jaune citron', '#80c820': 'Vert lime', '#7ae8a0': 'Vert menthe', '#20b890': 'Émeraude', '#7ab4e8': 'Bleu ciel',
+      '#4050c8': 'Bleu roi', '#c8a0e8': 'Lilas', '#e87ad4': 'Fuchsia', '#e87a7a': 'Rose corail', '#e07050': 'Terracotta',
+      '#e8c07a': 'Jaune miel', '#d0a830': 'Or', '#c9a96e': 'Beige doré', '#8b5e3c': 'Brun chaud', '#888888': 'Gris'
     };
+    const CNAMES_EN = {
+      '#e8e87a': 'Lemon yellow', '#80c820': 'Lime green', '#7ae8a0': 'Mint green', '#20b890': 'Emerald', '#7ab4e8': 'Sky blue',
+      '#4050c8': 'Royal blue', '#c8a0e8': 'Lilac', '#e87ad4': 'Fuchsia', '#e87a7a': 'Coral pink', '#e07050': 'Terracotta',
+      '#e8c07a': 'Honey yellow', '#d0a830': 'Gold', '#c9a96e': 'Golden beige', '#8b5e3c': 'Warm brown', '#888888': 'Grey'
+    };
+
     const SD = [
       { fr: 'mr', en: 'mr', sym: '◎', nameFR: 'Magic ring', nameEN: 'Magic ring', sdesc: 'anneau' },
       { fr: 'ms', en: 'sc', sym: '✕', nameFR: 'Maille serrée', nameEN: 'Single crochet', sdesc: 'croix' },
@@ -1657,7 +1640,7 @@
     function UL() { return cfg.lang; }
     const UI = {
       fr: { home: 'Accueil', projs: 'Projets', mypj: 'Mes projets', newpj: '+ Nouveau projet', sett: 'Paramètres', mod: 'Modifier', done: 'Terminé', row: 'Rang', st: 'Maille', nxt: 'suivant', prv: 'précédent', fin: '✓ Terminer', addr: 'Valider rang', updr: 'Mettre à jour', delr: 'Suppr. rang', undo: 'Suppr. dernière', nofd: 'Sans dossier', sub: 'chaque maille compte', logo: 'le compagnon du crochet', glob: 'Progression globale', empty: 'Vous n\'avez aucun projet.', del: 'Supprimer', leavetit: 'Quitter ?', leavemsg: 'Modifications non sauvegardées.', bravo: 'Bravo !', bsub: 'Vous avez terminé le projet : ', bend: 'Quel beau travail !', newt: 'Nouveau projet', modt: 'Modifier :', scnt: 'maille(s)', repp: 'Répéter', repps: '× dernier', repr: 'Répéter rang', reprs: 'fois', clr: 'Effacer', nost: 'Aucune maille', pnm: 'Nom du projet', pnmph: 'Ex: Bonnet d\'hiver...', not: 'Notes', notph: 'Fil, crochet, taille...', col: 'Couleur du fil', clkr: '↓ Cliquer sur un rang pour le modifier', newf: 'Nouveau dossier', movf: 'Déplacer', delall: 'Tout effacer', delalc: 'Tous vos projets seront supprimés.', theme: 'Thème', dark: 'Sombre', light: 'Clair', love: 'Love 💖', lang: 'Langue', scope: 'Portée', scopest: 'Points uniquement', scopefu: 'Interface complète', disp: 'Affichage points', dispc: 'Codes', disps: 'Symboles', data: 'Données', ver: 'SlipStitch v1 · 🧶', infob: 'Informations', foldel: 'Supprimer dossier', foldelc: 'Les projets seront retirés.', restart: 'Recommencer', fnbd: 'Terminé', addph: 'Photos', addphf: 'Photo terminé', refph: 'Photos', eggmsg: '💖 Mode Love débloqué !', refsect: 'Rangs' },
-      en: { home: 'Home', projs: 'Projects', mypj: 'My projects', newpj: '+ New project', sett: 'Settings', mod: 'Edit', done: 'Done', row: 'Row', st: 'Stitch', nxt: 'row', prv: 'previous', fin: '✓ Finish', addr: 'Save row', updr: 'Update', delr: 'Del. row', undo: 'Del. last', nofd: 'No folder', sub: 'every stitch counts', logo: 'the crochet companion', glob: 'Overall progress', empty: 'No projects yet.', del: 'Delete', leavetit: 'Leave?', leavemsg: 'Unsaved changes will be lost.', bravo: 'Well done !', bsub: 'You finished the project : ', bend: 'Beautiful work!', newt: 'New project', modt: 'Edit:', scnt: 'stitch(es)', repp: 'Repeat', repps: '× last', repr: 'Repeat row', reprs: 'times', clr: 'Clear', nost: 'No stitches', pnm: 'Project name', pnmph: 'E.g. Winter hat...', not: 'Notes', notph: 'Yarn, hook, size...', col: 'Yarn colour', clkr: '↓ Tap a row to edit', newf: 'New folder', movf: 'Move', delall: 'Reset all', delalc: 'All projects will be deleted.', theme: 'Theme', dark: 'Dark', light: 'Light', love: 'Love 💖', lang: 'Language', scope: 'Scope', scopest: 'Stitches only', scopefu: 'Full interface', disp: 'Stitch display', dispc: 'Codes', disps: 'Symbols', data: 'Data', ver: 'SlipStitch v12 · 🧶', infob: 'Infomations', foldel: 'Delete folder', foldelc: 'Projects will be removed.', restart: 'Start over', fnbd: 'Finished', addph: 'Photos', addphf: 'Finished photo', refph: 'Photos', eggmsg: '💖 Love mode unlocked!', refsect: 'Rows' }
+      en: { home: 'Home', projs: 'Projects', mypj: 'My projects', newpj: '+ New project', sett: 'Settings', mod: 'Edit', done: 'Done', row: 'Row', st: 'Stitch', nxt: 'row', prv: 'previous', fin: '✓ Finish', addr: 'Save row', updr: 'Update', delr: 'Del. row', undo: 'Del. last', nofd: 'No folder', sub: 'every stitch counts', logo: 'the crochet companion', glob: 'Overall progress', empty: 'No projects yet.', del: 'Delete', leavetit: 'Leave?', leavemsg: 'Unsaved changes will be lost.', bravo: 'Well done !', bsub: 'You finished the project : ', bend: 'Beautiful work!', newt: 'New project', modt: 'Edit:', scnt: 'stitch(es)', repp: 'Repeat', repps: '× last', repr: 'Repeat row', reprs: 'times', clr: 'Clear', nost: 'No stitches', pnm: 'Project name', pnmph: 'E.g. Winter hat...', not: 'Notes', notph: 'Yarn, hook, size...', col: 'Yarn colour', clkr: '↓ Tap a row to edit', newf: 'New folder', movf: 'Move', delall: 'Reset all', delalc: 'All projects will be deleted.', theme: 'Theme', dark: 'Dark', light: 'Light', love: 'Love 💖', lang: 'Language', scope: 'Scope', scopest: 'Stitches only', scopefu: 'Full interface', disp: 'Stitch display', dispc: 'Codes', disps: 'Symbols', data: 'Data', ver: 'SlipStitch v12 · 🧶', infob: 'Informations', foldel: 'Delete folder', foldelc: 'Projects will be removed.', restart: 'Start over', fnbd: 'Finished', addph: 'Photos', addphf: 'Finished photo', refph: 'Photos', eggmsg: '💖 Love mode unlocked!', refsect: 'Rows' }
     };
     function t(k) { const u = UL(); return (UI[u] && UI[u][k]) || UI.fr[k] || k; }
     function save() { localStorage.setItem('ss12p', JSON.stringify(projects)); localStorage.setItem('ss12f', JSON.stringify(folders)); localStorage.setItem('ss12', JSON.stringify(cfg)); }
@@ -1753,7 +1736,14 @@
       setT('bmyp', t('mypj')); setT('bnewp', t('newpj'));
       const bs = document.getElementById('bsett'); if (bs) bs.innerHTML = '⚙️ ' + t('sett');
       setT('lhome', t('home')); setT('lmyp', t('mypj')); setT('lprojs', t('projs'));
+      setT('lprojs2', t('projs'));
+      setT('lback', cfg.lang === 'en' ? 'Back' : 'Retour');
+      setT('lsett', '⚙️ ' + (cfg.lang === 'en' ? 'Settings' : t('sett')));
       const em = document.getElementById('edmode'); if (em) em.textContent = editMode ? t('done') : t('mod');
+      document.querySelectorAll('.lhometxt').forEach(el => el.textContent = t('home'));
+      setT('lbackproj', '← ' + (cfg.lang === 'en' ? 'Back to projects' : 'Retour aux projets'));
+      setT('lrestart', cfg.lang === 'en' ? 'Start over' : 'Recommencer');
+      setT('lfinished', cfg.lang === 'en' ? 'Finished 🎉' : 'Terminé 🎉');
     }
     function setT(id, v) { const el = document.getElementById(id); if (el) el.textContent = v; }
 
@@ -1909,7 +1899,7 @@
       <button class="fdel" onclick="event.stopPropagation();delFolder('${f.id}')">🗑</button>
       <span style="color:var(--gold);font-size:13px;${f.open ? 'transform:rotate(90deg);display:inline-block' : ''}">▶</span>
     </div>
-    ${f.open ? `<div class="flist">${fps.length ? fps.map(p => pCard(p, true)).join('') : `<div class="fempty">Aucun projet dans ce dossier.</div>`}</div>` : ''}</div>`;
+    ${f.open ? `<div class="flist">${fps.length ? fps.map(p => pCard(p, true)).join('') : `<div class="fempty">${cfg.lang === 'en' ? 'No projects in this folder.' : 'Aucun projet dans ce dossier.'}</div>`}</div>` : ''}</div>`;
       });
       const nof = projects.filter(p => !p.folderId);
       if (nof.length) { if (folders.length) html += `<div style="font-size:11px;color:var(--text3);letter-spacing:2px;text-transform:uppercase;margin:.75rem 0 .5rem;">${t('nofd')}</div>`; nof.forEach(p => html += pCard(p, false)); }
@@ -1953,7 +1943,7 @@
       showModal(t('newf'), '', () => {
         const v = document.getElementById('fi-inp').value.trim();
         if (!v) return;
-        if (folders.find(f => f.name.toLowerCase() === v.toLowerCase())) { alert('Un dossier avec ce nom existe déjà.'); return; }
+        if (folders.find(f => f.name.toLowerCase() === v.toLowerCase())) { alert(cfg.lang === 'en' ? 'A folder with this name already exists.' : 'Un dossier avec ce nom existe déjà.'); return; }
         folders.push({ id: Date.now().toString(), name: v, open: true }); save(); showScreen('projects');
       }, 'projects', `<input id="fi-inp" class="fi" placeholder="Ex: Vêtements, Cadeaux..." style="margin-bottom:1rem;">`);
     }
@@ -1998,7 +1988,7 @@
           }).join('');
           const groupBg = isGroupDone ? 'var(--bg3)' : isGroupCur ? 'var(--gb)' : 'var(--bg2)'; const groupBorder = isGroupDone ? 'var(--border)' : col.border;
           return `<div style="display:inline-flex;flex-direction:column;align-items:center;gap:4px;background:${groupBg};border:2px solid ${groupBorder};border-radius:12px;padding:6px 8px;">
-        <span style="font-size:10px;font-weight:700;letter-spacing:1.5px;color:${isGroupDone ? 'var(--text3)' : col.text};">EN 1</span>
+        <span style="font-size:10px;font-weight:700;letter-spacing:1.5px;color:${isGroupDone ? 'var(--text3)' : col.text};">${cfg.lang === 'en' ? 'IN 1' : 'EN 1'}</span>
         <div style="display:flex;flex-wrap:wrap;gap:4px;justify-content:center;">${innerHTML}</div>
       </div>`;
 
@@ -2083,7 +2073,7 @@
       let detail = '';
       if (pastille.type === 'en1') {
         const remaining = pastille.stitches.slice(subIdx);
-        detail = `[${remaining.map(s => slbl(s)).join('·')}] EN1`;
+        detail = `[${remaining.map(s => slbl(s)).join('·')}] ${cfg.lang === 'en' ? 'IN1' : 'EN1'}`;
       } else if (pastille.type === 'rep') {
         const repsLeft = pastille.repTotal - pastille.repIdx;
         const motif = pastille.stitches.map(s => slbl(s)).join('·');
@@ -2093,7 +2083,7 @@
       }
 
       return `<div style="background:${col.bg};border:2px solid ${col.border};border-radius:10px;width:72px;display:flex;flex-direction:column;align-items:center;justify-content:center;flex-shrink:0;gap:2px;overflow:hidden;padding:6px;">
-    ${pastille.type === 'en1' ? `<div style="font-size:9px;font-weight:700;letter-spacing:1px;color:${col.text};opacity:.8;">EN 1</div>` : ''}
+    ${pastille.type === 'en1' ? `<div style="font-size:9px;font-weight:700;letter-spacing:1px;color:${col.text};opacity:.8;">${cfg.lang === 'en' ? 'IN 1' : 'EN 1'}</div>` : ''}
     <div style="font-size:22px;font-weight:700;color:${col.text};line-height:1;">${slbl(cur)}</div>
     ${detail ? `<div style="font-size:9px;color:${col.text};opacity:.85;text-align:center;line-height:1.2;padding:0 4px;word-break:break-all;">${detail}</div>` : ''}
   </div>`;
@@ -2111,7 +2101,7 @@
       const doneInRow = pastilles.slice(0, pIdx).reduce((a, p) => a + p.stitches.length, 0) + subIdx;
       const done = donePrev + doneInRow;
       const pct = total ? Math.round(done / total * 100) : 0;
-      const cn = CNAMES[p.color] || p.color;
+      const cn = (cfg.lang === 'en' ? CNAMES_EN : CNAMES)[p.color] || p.color;
       const fn = p.folderId ? (folders.find(f => f.id === p.folderId) || {}).name || '—' : '—';
       const allPh = [...(p.photos || []), ...(p.finishedPhoto ? [p.finishedPhoto] : [])];
       const phHTML = allPh.length ? `<div class="drow"><span class="dico">📷</span><div style="width:100%;"><div class="dlbl">${t('refph')}</div><div class="pgal">${allPh.map(ph => `<img src="${ph}" onclick="openLB('${ph}')">`).join('')}</div></div></div>` : '';
@@ -2202,7 +2192,8 @@
         const pastilles = parseStitches(lastRow.stitches);
         p.currentStitch = pastilles.length; p.currentSubStitch = 0; save(); showBravo();
       }
-    } function prvRow() { const p = curP; if ((p.currentRow || 0) > 0) { p.currentRow--; p.currentStitch = 0; p.currentSubStitch = 0; save(); hapticRow(); renderView(); } } function restartP(id) { const p = projects.find(x => x.id === id); if (!p) return; p.currentRow = 0; p.currentStitch = 0; p.currentSubStitch = 0; save(); curP = p; infoOpen = true; document.getElementById('vtitle').textContent = p.name; renderView(); document.querySelectorAll('.screen').forEach(s => s.classList.remove('active')); document.getElementById('project-view').classList.add('active'); }
+    }
+    function prvRow() { const p = curP; if ((p.currentRow || 0) > 0) { p.currentRow--; p.currentStitch = 0; p.currentSubStitch = 0; save(); hapticRow(); renderView(); } } function restartP(id) { const p = projects.find(x => x.id === id); if (!p) return; p.currentRow = 0; p.currentStitch = 0; p.currentSubStitch = 0; save(); curP = p; infoOpen = true; document.getElementById('vtitle').textContent = p.name; renderView(); document.querySelectorAll('.screen').forEach(s => s.classList.remove('active')); document.getElementById('project-view').classList.add('active'); }
     function delProj(id) {
       showModal(t('del'), 'Cette action est irréversible.', () => {
         projects = projects.filter(p => p.id !== id); save(); showScreen('projects');
@@ -2232,7 +2223,7 @@
     }
     function renderCreate() {
       const body = document.getElementById('cbody');
-      const csws = COLORS.map(c => `<div class="csw${nProj.color === c ? ' sel' : ''}" style="background:${c}" title="${CNAMES[c] || c}" onclick="setCol('${c}')"></div>`).join('');
+      const csws = COLORS.map(c => `<div class="csw${nProj.color === c ? ' sel' : ''}" style="background:${c}" title="${(cfg.lang === 'en' ? CNAMES_EN : CNAMES)[c] || c}" onclick="setCol('${c}')"></div>`).join('');
       const favCodes = cfg.favSt || [];
       const lsSorted = [...LS().filter(s => favCodes.includes(s.code)), ...LS().filter(s => !favCodes.includes(s.code))];
       const sbtns = lsSorted.map(s => {
@@ -2246,8 +2237,7 @@
       const subPanel = subMode ? `
     <div style="background:var(--pb);border:2px dashed var(--pbr);border-radius:10px;padding:10px;margin-bottom:.75rem;">
       <div style="font-size:11px;color:var(--pt);font-weight:700;letter-spacing:1px;text-transform:uppercase;margin-bottom:6px;">
-        ${subMode === 'en1' ? '✦ Sous-rang — En 1 maille' : '✦ Sous-rang — Motif à répéter'}
-      </div>
+        ${subMode === 'en1' ? `✦ ${cfg.lang === 'en' ? 'Sub-row — In 1 stitch' : 'Sous-rang — En 1 maille'}` : `✦ ${cfg.lang === 'en' ? 'Sub-row — Repeated pattern' : 'Sous-rang — Motif à répéter'}`}</div>
       <div id="subdisp" style="display:flex;flex-wrap:wrap;gap:6px;min-height:36px;padding:8px;background:var(--bg);border-radius:6px;margin-bottom:8px;">${liveDisp(subRow)}</div>
       ${subMode === 'rep' ? `<div style="display:flex;align-items:center;gap:8px;margin-bottom:8px;flex-wrap:wrap;">
         <span style="font-size:12px;color:var(--text2);">Répéter :</span>
@@ -2256,8 +2246,8 @@
       </div>`: ''}
       <div style="display:flex;gap:8px;">
         <button class="rab grn" style="flex:1;padding:10px;" onclick="validateSub()">OK</button>
-        <button class="rab red" style="flex:1;padding:10px;" onclick="cancelSub()">✕ Annuler</button>
-      </div>
+       <button class="rab red" style="flex:1;padding:10px;" onclick="cancelSub()">✕ ${cfg.lang === 'en' ? 'Cancel' : 'Annuler'}</button>
+       </div>
     </div>`: '';
 
       const repBtns = `<div style="display:flex;align-items:center;gap:6px;flex-wrap:wrap;margin-top:.75rem;padding-top:.75rem;border-top:1px solid var(--border);">
@@ -2269,9 +2259,9 @@
 
       body.innerHTML = `
     <div class="fg"><label class="fl">${t('pnm')}</label><input class="fi" type="text" value="${nProj.name}" placeholder="${t('pnmph')}" oninput="nProj.name=this.value"></div>
-    <div class="fg"><label class="fl">${t('col')}</label><div class="cpick">${csws}</div><div style="font-size:12px;color:var(--text2);margin-top:6px;">${CNAMES[nProj.color] || ''}</div></div>
+    <div class="fg"><label class="fl">${t('col')}</label><div class="cpick">${csws}</div><div style="font-size:12px;color:var(--text2);margin-top:6px;">${(cfg.lang === 'en' ? CNAMES_EN : CNAMES)[nProj.color] || ''}</div></div>
     <div class="fg"><label class="fl">${t('not')}</label><textarea class="fta" placeholder="${t('notph')}" oninput="nProj.notes=this.value">${nProj.notes}</textarea></div>
-${folders.length ? `<div class="fg"><label class="fl">Dossier</label><select class="fsel" onchange="nProj.folderId=this.value||null"><option value="">${t('nofd')}</option>${folders.map(f => `<option value="${f.id}"${nProj.folderId === f.id ? ' selected' : ''}>${f.name}</option>`).join('')}</select></div>` : ''}
+${folders.length ? `<div class="fg"><label class="fl">${cfg.lang === 'en' ? 'Folder' : 'Dossier'}</label><select class="fsel" onchange="nProj.folderId=this.value||null"><option value="">${t('nofd')}</option>${folders.map(f => `<option value="${f.id}"${nProj.folderId === f.id ? ' selected' : ''}>${f.name}</option>`).join('')}</select></div>` : ''}
     <div class="fg"><label class="fl">${t('addph')}</label><div class="mphlist">${phHTML}<div class="addph" onclick="document.getElementById('ph-inp').click()">+</div></div></div>
     <div class="sdiv"></div>
     ${summ ? `<div class="rsums"><div style="font-size:11px;color:var(--text3);letter-spacing:1px;text-transform:uppercase;margin-bottom:6px;">${t('clkr')}</div>${summ}</div>` : ''}
@@ -2282,9 +2272,8 @@ ${folders.length ? `<div class="fg"><label class="fl">Dossier</label><select cla
       ${subPanel}
       <div class="sbtns">${sbtns}</div>
       <div style="display:flex;gap:6px;margin-bottom:.5rem;">
-        <button class="rab amb" style="flex:1;padding:10px;font-size:12px;" onclick="startSub('en1')">✦ En 1 maille</button>
-        <button class="rab purp" style="flex:1;padding:10px;font-size:12px;" onclick="startSub('rep')">⟳ Motif répété</button>
-      </div>
+       <button class="rab amb" style="flex:1;padding:10px;font-size:12px;" onclick="startSub('en1')">✦ ${cfg.lang === 'en' ? 'In 1 stitch' : 'En 1 maille'}</button>
+        <button class="rab purp" style="flex:1;padding:10px;font-size:12px;" onclick="startSub('rep')">⟳ ${cfg.lang === 'en' ? 'Repeated pattern' : 'Motif répété'}</button></div>
       <div class="ract">
         <button class="rab amb" onclick="undoSt()">← ${t('undo')}</button>
         <button class="rab grn" onclick="saveRow()">✓ ${edg ? t('updr') : t('addr')}</button>
@@ -2367,10 +2356,10 @@ ${folders.length ? `<div class="fg"><label class="fl">Dossier</label><select cla
     }
     function saveProj() {
       if (!nProj.name.trim()) { alert(t('pnm') + ' ?'); return; }
-      if (!cRows.length) { alert('Ajoutez au moins un rang !'); return; }
+      if (!cRows.length) { alert(cfg.lang === 'en' ? 'Add at least one row!' : 'Ajoutez au moins un rang !'); return; }
       if (!Array.isArray(projects)) projects = [];
       checkEgg(nProj.name);
-      if (!editPid && projects.find(p => p.name.toLowerCase() === nProj.name.trim().toLowerCase())) { alert('Un projet avec ce nom existe déjà.'); return; }
+      if (!editPid && projects.find(p => p.name.toLowerCase() === nProj.name.trim().toLowerCase())) { alert(cfg.lang === 'en' ? 'A project with this name already exists.' : 'Un projet avec ce nom existe déjà.'); return; }
       if (editPid) {
         const idx = projects.findIndex(p => p.id === editPid);
         if (idx > -1) projects[idx] = { ...projects[idx], name: nProj.name, color: nProj.color, notes: nProj.notes, rows: JSON.parse(JSON.stringify(cRows)), folderId: nProj.folderId, photos: nProj.photos || [] };
