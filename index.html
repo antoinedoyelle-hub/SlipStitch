@@ -1,0 +1,2448 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    :root {
+      --bg: #090f15;
+      --bg2: #0f1923;
+      --bg3: #162030;
+      --border: #1e2d3d;
+      --border2: #2a3d50;
+      --text: #ccd8d4;
+      --text2: #6a8880;
+      --text3: #3a5858;
+      --gold: #7ab8a8;
+      --gold2: #a0d4c4;
+      --pb: #080d1a;
+      --pbr: #3a5888;
+      --pt: #88a8c8;
+      --rb: #140608;
+      --rbr: #784050;
+      --rt: #c89098;
+      --gb: #040a08;
+      --gbr: #2a7860;
+      --gt: #68b898;
+      --ab: #100c04;
+      --abr: #786838;
+      --at: #c0a868;
+    }
+
+    body.light {
+      --bg: #f7f3ed;
+      --bg2: #ffffff;
+      --bg3: #ede8df;
+      --border: #d8cfc4;
+      --border2: #c0b5a8;
+      --text: #2c2420;
+      --text2: #7a6558;
+      --text3: #b0a090;
+      --gold: #6a9080;
+      --gold2: #88a898;
+      --pb: #eef0f4;
+      --pbr: #8898b8;
+      --pt: #384868;
+      --rb: #f8eeee;
+      --rbr: #c09898;
+      --rt: #684848;
+      --gb: #eef4f0;
+      --gbr: #88b0a0;
+      --gt: #386858;
+      --ab: #f8f4ee;
+      --abr: #c0a880;
+      --at: #685830;
+    }
+
+    body.love {
+      --bg: #120e18;
+      --bg2: #1a1422;
+      --bg3: #221c2e;
+      --border: #2e2640;
+      --border2: #3e3452;
+      --text: #e0d8e8;
+      --text2: #a090b0;
+      --text3: #605870;
+      --gold: #b090c0;
+      --gold2: #c8a8d8;
+      --pb: #1a1428;
+      --pbr: #7868a8;
+      --pt: #c0b0e0;
+      --rb: #180e18;
+      --rbr: #905878;
+      --rt: #d0a0b8;
+      --gb: #18100e;
+      --gbr: #907060;
+      --gt: #d0b0a0;
+      --ab: #181410;
+      --abr: #907860;
+      --at: #d0b898;
+    }
+
+    body {
+      font-family: 'Georgia', serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+    }
+
+    .screen {
+      display: none;
+      min-height: 100vh;
+      flex-direction: column;
+      position: relative;
+    }
+
+    .screen.active {
+      display: flex;
+    }
+
+    #home {
+      background: var(--bg);
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+    }
+
+    .bg-pat {
+      position: absolute;
+      inset: 0;
+      opacity: .05;
+      background-image: repeating-linear-gradient(45deg, var(--gold) 0, var(--gold) 1px, transparent 0, transparent 50%);
+      background-size: 20px 20px;
+    }
+
+    .home-inner {
+      text-align: center;
+      z-index: 1;
+      padding: 2rem;
+    }
+
+    .app-logo {
+      font-size: 11px;
+      letter-spacing: 6px;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: .5rem;
+    }
+
+    .app-name {
+      font-size: 54px;
+      font-weight: 700;
+      color: var(--text);
+      letter-spacing: -2px;
+      line-height: 1;
+      margin-bottom: .5rem;
+    }
+
+    .app-sub {
+      font-size: 11px;
+      color: var(--text3);
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      margin-bottom: 3rem;
+    }
+
+    .home-btns {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+      width: 260px;
+      margin: 0 auto;
+    }
+
+    .bp {
+      background: var(--gold);
+      color: #1a1a2e;
+      border: none;
+      padding: 18px 32px;
+      font-family: 'Georgia', serif;
+      font-size: 16px;
+      font-weight: 700;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+
+
+    .bs {
+      background: var(--bg2);
+      color: var(--gold);
+      border: 2px solid var(--gold);
+      padding: 16px 32px;
+      font-family: 'Georgia', serif;
+      font-size: 16px;
+      font-weight: 700;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+
+
+    .bset {
+      background: var(--bg3);
+      color: var(--text2);
+      border: 2px solid var(--border2);
+      padding: 12px 32px;
+      font-family: 'Georgia', serif;
+      font-size: 14px;
+      border-radius: 8px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+    }
+
+    .bset:hover {
+      filter: brightness(1.15);
+    }
+
+    .hdr {
+      background: var(--bg2);
+      padding: .875rem 1rem;
+      display: flex;
+      align-items: center;
+      gap: .75rem;
+      border-bottom: 2px solid var(--border);
+      flex-shrink: 0;
+    }
+
+    .bk {
+      background: var(--bg3);
+      border: 2px solid var(--gold);
+      color: var(--gold);
+      cursor: pointer;
+      padding: 8px 14px;
+      border-radius: 8px;
+      font-family: 'Georgia', serif;
+      font-size: 13px;
+      font-weight: 700;
+      white-space: nowrap;
+    }
+
+    button:hover {
+      filter: brightness(1.15);
+    }
+
+    .htitle {
+      font-size: 18px;
+      font-weight: 700;
+      color: var(--text);
+      flex: 1;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .ha {
+      background: var(--gold);
+      border: none;
+      color: #1a1a2e;
+      padding: 8px 14px;
+      font-family: 'Georgia', serif;
+      font-size: 12px;
+      font-weight: 700;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+
+    .ha:hover {
+      filter: brightness(1.15);
+    }
+
+    .sbody {
+      flex: 1;
+      padding: 1.25rem;
+      overflow-y: auto;
+      background: var(--bg);
+    }
+
+    /* cards */
+    .pcard {
+      background: var(--bg2);
+      border: 2px solid var(--border);
+      border-radius: 10px;
+      padding: 1.1rem;
+      cursor: pointer;
+      transition: border-color .2s;
+      margin-bottom: .75rem;
+      position: relative;
+    }
+
+    .pcard:hover {
+      filter: brightness(1.1);
+    }
+
+    .pcard.emode {
+      border-color: var(--pbr);
+    }
+
+    .pcard.done {
+      border-color: var(--gbr);
+    }
+
+    .pcard-hdr {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: .625rem;
+    }
+
+    .pname {
+      font-size: 17px;
+      font-weight: 700;
+      color: var(--text);
+    }
+
+    .cdot {
+      width: 14px;
+      height: 14px;
+      border-radius: 50%;
+      flex-shrink: 0;
+    }
+
+    .pbar {
+      background: var(--bg3);
+      border-radius: 4px;
+      height: 6px;
+      margin-bottom: .4rem;
+      overflow: hidden;
+    }
+
+    .pbfill {
+      height: 100%;
+      background: var(--gold);
+      border-radius: 4px;
+      transition: width .4s;
+    }
+
+    .pbfill.c {
+      background: var(--gbr);
+    }
+
+    .pmeta {
+      font-size: 11px;
+      color: var(--text3);
+      display: flex;
+      gap: .875rem;
+    }
+
+    .pnotes {
+      font-size: 11px;
+      color: var(--text2);
+      margin-top: .4rem;
+      font-style: italic;
+    }
+
+    .fbadge {
+      display: inline-block;
+      background: var(--gb);
+      border: 1.5px solid var(--gbr);
+      color: var(--gt);
+      font-size: 11px;
+      font-weight: 700;
+      padding: 2px 10px;
+      border-radius: 20px;
+      margin-top: .4rem;
+    }
+
+    .ebadge {
+      position: absolute;
+      top: 8px;
+      right: 8px;
+      background: var(--pbr);
+      color: white;
+      font-size: 11px;
+      padding: 3px 10px;
+      border-radius: 10px;
+      font-weight: 700;
+    }
+
+    /* folder */
+    .fcard {
+      background: var(--bg2);
+      border: 2px solid var(--border);
+      border-radius: 10px;
+      margin-bottom: .875rem;
+      overflow: hidden;
+    }
+
+    .fhdr {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: .875rem 1rem;
+      cursor: pointer;
+    }
+
+    .fhdr:hover {
+      background: var(--bg3);
+    }
+
+    .fname {
+      font-size: 15px;
+      font-weight: 700;
+      color: var(--text);
+      flex: 1;
+    }
+
+    .fmeta {
+      font-size: 11px;
+      color: var(--text3);
+      margin-right: 6px;
+    }
+
+    .fdel {
+      background: var(--rb);
+      border: 1.5px solid var(--rbr);
+      color: var(--rt);
+      padding: 4px 10px;
+      border-radius: 6px;
+      font-size: 11px;
+      font-weight: 700;
+      cursor: pointer;
+      font-family: 'Georgia', serif;
+    }
+
+    .flist {
+      padding: 0 .875rem .875rem;
+    }
+
+    .fempty {
+      font-size: 12px;
+      color: var(--text3);
+      font-style: italic;
+      padding: 8px 0;
+    }
+
+    /* detail */
+    .dcard {
+      background: var(--bg2);
+      border-radius: 10px;
+      padding: 1.1rem;
+      border: 2px solid var(--border);
+      margin-bottom: 1rem;
+    }
+
+    .drow {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      padding: 8px 0;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .drow:last-child {
+      border-bottom: none;
+    }
+
+    .dico {
+      font-size: 18px;
+      width: 28px;
+      text-align: center;
+      flex-shrink: 0;
+    }
+
+    .dlbl {
+      font-size: 11px;
+      color: var(--text3);
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    .dval {
+      font-size: 14px;
+      color: var(--text);
+      font-weight: 600;
+    }
+
+    .dvalnt {
+      font-size: 13px;
+      color: var(--text2);
+      font-style: italic;
+      line-height: 1.5;
+    }
+
+    .dcdot {
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      border: 2px solid var(--border2);
+    }
+
+    /* progress */
+    .gprog {
+      background: var(--bg2);
+      border-radius: 10px;
+      padding: 1.1rem;
+      border: 2px solid var(--border);
+      margin-bottom: 1rem;
+    }
+
+    .plbl {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: .625rem;
+    }
+
+    .plbl span {
+      font-size: 12px;
+      color: var(--text2);
+    }
+
+    .plbl strong {
+      color: var(--gold);
+      font-size: 14px;
+    }
+
+    .pbar2 {
+      background: var(--bg3);
+      border-radius: 6px;
+      height: 12px;
+      overflow: hidden;
+    }
+
+    .pbfill2 {
+      height: 100%;
+      background: var(--gold);
+      border-radius: 6px;
+      transition: width .4s;
+    }
+
+    /* row info */
+    .rinfo {
+      background: var(--bg2);
+      border-radius: 10px;
+      padding: 1.1rem;
+      border: 2px solid var(--border);
+      margin-bottom: 1rem;
+    }
+
+    .rbadge {
+      display: inline-block;
+      background: var(--bg3);
+      color: var(--gold);
+      font-size: 12px;
+      font-weight: 700;
+      padding: 4px 12px;
+      border-radius: 20px;
+      margin-bottom: .75rem;
+      letter-spacing: 1px;
+    }
+
+    .sdisp {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-bottom: .75rem;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .stok {
+      background: var(--bg3);
+      border: 2px solid var(--border2);
+      border-radius: 20px;
+      padding: 6px 12px;
+      font-size: 13px;
+      color: var(--text2);
+    }
+
+    .stok.cur {
+      background: var(--gold);
+      border-color: var(--gold2);
+      color: #1a1a2e;
+      font-weight: 700;
+      transform: scale(1.12);
+    }
+
+    .stok.dn {
+      background: var(--gb);
+      border-color: var(--gbr);
+      color: var(--gt);
+    }
+
+    /* action buttons */
+    .agrid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: .75rem;
+      margin-bottom: 1rem;
+    }
+
+    .ab {
+      padding: 16px 8px;
+      border-radius: 10px;
+      font-family: 'Georgia', serif;
+      font-size: 14px;
+      cursor: pointer;
+      border: 2px solid;
+      transition: all .2s;
+      text-align: center;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+    }
+
+    .ab:active {
+      transform: scale(.97);
+    }
+
+    .ab.gold {
+      background: var(--ab);
+      border-color: var(--abr);
+      color: var(--at);
+    }
+
+
+    .ab.out {
+      background: var(--bg3);
+      border-color: var(--border2);
+      color: var(--text2);
+    }
+
+
+
+    .ab.purp {
+      background: var(--pb);
+      border-color: var(--pbr);
+      color: var(--pt);
+    }
+
+    .ab.red {
+      background: var(--rb);
+      border-color: var(--rbr);
+      color: var(--rt);
+    }
+
+    .ab.grn {
+      background: var(--gb);
+      border-color: var(--gbr);
+      color: var(--gt);
+    }
+
+    .ab.amb {
+      background: var(--ab);
+      border-color: var(--abr);
+      color: var(--at);
+    }
+
+    .ab.full {
+      grid-column: 1/-1;
+    }
+
+    /* form */
+    .fg {
+      margin-bottom: 1.25rem;
+    }
+
+    .fl {
+      font-size: 11px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--text2);
+      margin-bottom: .5rem;
+      display: block;
+    }
+
+    .fi {
+      width: 100%;
+      background: var(--bg2);
+      border: 2px solid var(--border);
+      border-radius: 8px;
+      padding: 12px 14px;
+      font-family: 'Georgia', serif;
+      font-size: 14px;
+      color: var(--text);
+      outline: none;
+    }
+
+    .fi:focus {
+      border-color: var(--gold);
+    }
+
+    .fta {
+      width: 100%;
+      background: var(--bg2);
+      border: 2px solid var(--border);
+      border-radius: 8px;
+      padding: 12px 14px;
+      font-family: 'Georgia', serif;
+      font-size: 13px;
+      color: var(--text);
+      outline: none;
+      resize: vertical;
+      min-height: 70px;
+    }
+
+    .fsel {
+      width: 100%;
+      background: var(--bg2);
+      border: 2px solid var(--border);
+      border-radius: 8px;
+      padding: 12px 14px;
+      font-family: 'Georgia', serif;
+      font-size: 14px;
+      color: var(--text);
+      outline: none;
+    }
+
+    .cpick {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .csw {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      cursor: pointer;
+      border: 3px solid transparent;
+    }
+
+    .csw.sel {
+      border-color: white;
+      transform: scale(1.2);
+    }
+
+    .sdiv {
+      border: none;
+      border-top: 2px solid var(--border);
+      margin: 1.25rem 0;
+    }
+
+    /* row builder */
+    .rbuild {
+      background: var(--bg2);
+      border-radius: 10px;
+      padding: 1.1rem;
+      border: 2px solid var(--border);
+      margin-bottom: 1rem;
+    }
+
+    .rbhdr {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: .875rem;
+    }
+
+    .rbnbadge {
+      background: var(--gold);
+      color: #1a1a2e;
+      font-size: 13px;
+      font-weight: 700;
+      padding: 5px 14px;
+      border-radius: 20px;
+    }
+
+    .crdisp {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      min-height: 44px;
+      margin-bottom: .875rem;
+      padding: 10px;
+      background: var(--bg);
+      border-radius: 8px;
+      border: 2px solid var(--border);
+    }
+
+    .sgrp {
+      display: flex;
+      align-items: center;
+    }
+
+    .sglbl {
+      background: var(--bg3);
+      border: 2px solid var(--border2);
+      border-radius: 20px 0 0 20px;
+      padding: 6px 10px;
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--gold);
+    }
+
+    .sgcnt {
+      background: var(--gold);
+      border: 2px solid var(--gold2);
+      border-left: none;
+      border-radius: 0 20px 20px 0;
+      padding: 6px 10px;
+      font-size: 13px;
+      font-weight: 700;
+      color: #1a1a2e;
+      min-width: 28px;
+      text-align: center;
+    }
+
+    .sbtns {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 6px;
+      margin-bottom: .75rem;
+    }
+
+    .sbtn {
+      background: var(--bg3);
+      border: 2px solid var(--border2);
+      border-radius: 8px;
+      padding: 10px 4px;
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--gold);
+      cursor: pointer;
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 3px;
+    }
+
+    .sbtn:hover {
+      border-color: var(--gold);
+    }
+
+    .sbtn:active {
+      transform: scale(.95);
+    }
+
+    .sbtn .sym {
+      font-size: 16px;
+      line-height: 1;
+    }
+
+    .sbtn .lbl {
+      font-size: 10px;
+      color: var(--text3);
+    }
+
+    .ract {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+      margin-top: .75rem;
+    }
+
+    .rab {
+      padding: 12px 8px;
+      border-radius: 8px;
+      font-family: 'Georgia', serif;
+      font-size: 12px;
+      font-weight: 700;
+      cursor: pointer;
+      border: 2px solid;
+      text-align: center;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 4px;
+    }
+
+    .rab.amb {
+      background: var(--ab);
+      border-color: var(--abr);
+      color: var(--at);
+    }
+
+    .rab.red {
+      background: var(--rb);
+      border-color: var(--rbr);
+      color: var(--rt);
+    }
+
+    .rab.grn {
+      background: var(--gb);
+      border-color: var(--gbr);
+      color: var(--gt);
+    }
+
+    .rab.purp {
+      background: var(--pb);
+      border-color: var(--pbr);
+      color: var(--pt);
+    }
+
+    .rab.full {
+      grid-column: 1/-1;
+    }
+
+    .rrow {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      padding: .75rem 0 0;
+      border-top: 1px solid var(--border);
+      margin-top: .75rem;
+      flex-wrap: wrap;
+    }
+
+    .rlbl {
+      font-size: 12px;
+      color: var(--text2);
+    }
+
+    .rinp {
+      background: var(--bg);
+      border: 2px solid var(--border2);
+      border-radius: 6px;
+      padding: 8px 10px;
+      width: 60px;
+      font-family: 'Georgia', serif;
+      font-size: 14px;
+      color: var(--text);
+      text-align: center;
+    }
+
+    .rapbtn {
+      background: var(--pb);
+      border: 2px solid var(--pbr);
+      border-radius: 6px;
+      padding: 8px 14px;
+      font-family: 'Georgia', serif;
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--pt);
+      cursor: pointer;
+    }
+
+    .rsums {
+      margin-bottom: .875rem;
+    }
+
+    .rsum {
+      background: var(--bg2);
+      border-radius: 6px;
+      padding: 8px 12px;
+      margin-bottom: 5px;
+      border: 2px solid var(--border);
+      font-size: 12px;
+      color: var(--text2);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      cursor: pointer;
+    }
+
+    .rsum:hover {
+      border-color: var(--gold);
+    }
+
+    .rsum strong {
+      color: var(--gold);
+    }
+
+    .rsum.sel {
+      border-color: var(--gold);
+      background: var(--bg3);
+    }
+
+    .rtot {
+      font-size: 11px;
+      color: var(--text3);
+      font-style: italic;
+      white-space: nowrap;
+      margin-left: 8px;
+    }
+
+    .fbtn {
+      background: var(--gold);
+      color: #1a1a2e;
+      border: none;
+      width: 100%;
+      padding: 16px;
+      font-family: 'Georgia', serif;
+      font-size: 16px;
+      font-weight: 700;
+      border-radius: 10px;
+      cursor: pointer;
+      margin-bottom: 2rem;
+    }
+
+    /* photo */
+    .mphlist {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: .5rem;
+    }
+
+    .mphitem {
+      position: relative;
+    }
+
+    .mphimg {
+      width: 80px;
+      height: 80px;
+      object-fit: cover;
+      border-radius: 8px;
+      border: 2px solid var(--border);
+      cursor: pointer;
+    }
+
+    .mphdel {
+      position: absolute;
+      top: -6px;
+      right: -6px;
+      background: var(--rb);
+      border: 2px solid var(--rbr);
+      color: var(--rt);
+      width: 22px;
+      height: 22px;
+      border-radius: 50%;
+      cursor: pointer;
+      font-size: 12px;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .addph {
+      width: 80px;
+      height: 80px;
+      border: 2px dashed var(--border2);
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      font-size: 24px;
+      color: var(--text3);
+    }
+
+    .addph:hover {
+      border-color: var(--gold);
+      color: var(--gold);
+    }
+
+    /* bravo */
+    .bwrap {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-start;
+      padding: 2rem 1.5rem;
+      text-align: center;
+      background: var(--bg);
+      overflow-y: auto;
+      gap: 1rem;
+    }
+
+    .bemoji {
+      font-size: 72px;
+      animation: bnc .6s ease infinite alternate;
+    }
+
+    @keyframes bnc {
+      from {
+        transform: translateY(0);
+      }
+
+      to {
+        transform: translateY(-12px);
+      }
+    }
+
+    .btitle {
+      font-size: 32px;
+      font-weight: 700;
+      color: var(--gold);
+    }
+
+    .bsub {
+      font-size: 16px;
+      color: var(--text2);
+      line-height: 1.6;
+    }
+
+    .bpharea {
+      width: 100%;
+      max-width: 320px;
+    }
+
+    .phupl {
+      background: var(--bg3);
+      border: 2px dashed var(--border2);
+      color: var(--text2);
+      padding: 16px;
+      border-radius: 10px;
+      cursor: pointer;
+      width: 100%;
+      font-family: 'Georgia', serif;
+      font-size: 14px;
+      text-align: center;
+    }
+
+    .phupl:hover {
+      border-color: var(--gold);
+      color: var(--gold);
+    }
+
+    /* finished overlay */
+    .fovl {
+      background: var(--bg2);
+      border: 2px solid var(--gbr);
+      border-radius: 10px;
+      padding: 1.5rem;
+      text-align: center;
+      margin-bottom: 1rem;
+    }
+
+    .fovle {
+      font-size: 48px;
+      margin-bottom: .5rem;
+    }
+
+    .fovlt {
+      font-size: 20px;
+      font-weight: 700;
+      color: var(--gt);
+      margin-bottom: .5rem;
+    }
+
+    .fovls {
+      font-size: 13px;
+      color: var(--text2);
+      margin-bottom: 1.25rem;
+      line-height: 1.5;
+    }
+
+    /* settings */
+    .ss {
+      background: var(--bg2);
+      border-radius: 10px;
+      border: 2px solid var(--border);
+      margin-bottom: 1rem;
+      overflow: hidden;
+    }
+
+    .sstitle {
+      font-size: 11px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--text2);
+      padding: 10px 14px;
+      background: var(--bg3);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .srow {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 14px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .srow:last-child {
+      border-bottom: none;
+    }
+
+    .slbl {
+      font-size: 14px;
+      color: var(--text);
+    }
+
+    .sslbl {
+      font-size: 11px;
+      color: var(--text3);
+      margin-top: 2px;
+    }
+
+    /* theme selector */
+    .thsel {
+      display: flex;
+      gap: 8px;
+      padding: 14px;
+      flex-wrap: wrap;
+    }
+
+    .thbtn {
+      flex: 1;
+      min-width: 70px;
+      padding: 12px 6px;
+      border-radius: 10px;
+      border: 2px solid var(--border);
+      cursor: pointer;
+      font-family: 'Georgia', serif;
+      font-size: 12px;
+      font-weight: 700;
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 4px;
+      transition: border-color .2s;
+    }
+
+    .thbtn.dark {
+      background: #1a1a2e;
+      color: #e8e0d0;
+    }
+
+    .thbtn.lght {
+      background: #f5f0e8;
+      color: #2a2018;
+    }
+
+    .thbtn.love {
+      background: #1a0a18;
+      color: #f0d8f0;
+      border-color: #5a2a58;
+    }
+
+    .thbtn.act {
+      border-color: var(--gold) !important;
+    }
+
+    /* lang tabs */
+    .ltabs {
+      display: flex;
+      gap: 6px;
+      padding: 14px;
+    }
+
+    .ltab {
+      flex: 1;
+      padding: 10px 6px;
+      border-radius: 8px;
+      border: 2px solid var(--border);
+      cursor: pointer;
+      font-family: 'Georgia', serif;
+      font-size: 12px;
+      font-weight: 700;
+      text-align: center;
+      color: var(--text2);
+      background: var(--bg3);
+    }
+
+    .ltab.act {
+      border-color: var(--gold);
+      color: var(--gold);
+      background: var(--bg2);
+    }
+
+    /* lang scope */
+    .lsgrp {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      padding: 14px;
+    }
+
+    .lsopt {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      cursor: pointer;
+      padding: 10px 12px;
+      border-radius: 8px;
+      border: 2px solid var(--border);
+    }
+
+    .lsopt:hover {
+      border-color: var(--gold);
+    }
+
+    .lsopt.sel {
+      border-color: var(--gold);
+      background: var(--bg3);
+    }
+
+    .lsopt input {
+      accent-color: var(--gold);
+      width: 16px;
+      height: 16px;
+    }
+
+    .lslbl {
+      font-size: 13px;
+      color: var(--text);
+    }
+
+    /* stitch legend */
+    .sleg {
+      padding: 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .slegrow {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 8px 10px;
+      background: var(--bg3);
+      border-radius: 8px;
+      border: 1px solid var(--border);
+    }
+
+    .slegsym {
+      font-size: 22px;
+      width: 32px;
+      text-align: center;
+      flex-shrink: 0;
+    }
+
+    .slegchip {
+      background: var(--bg2);
+      border: 1.5px solid var(--border2);
+      border-radius: 10px;
+      padding: 2px 8px;
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--gold);
+    }
+
+    .slegnm {
+      font-size: 13px;
+      color: var(--text);
+      flex: 1;
+    }
+
+    /* modal */
+    .modwrap {
+      min-height: 100vh;
+      background: rgba(0, 0, 0, .85);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 2rem;
+    }
+
+    .modwrap.open {
+      display: flex;
+    }
+
+    .mod {
+      background: var(--bg2);
+      border: 2px solid var(--border2);
+      border-radius: 14px;
+      padding: 2rem;
+      max-width: 320px;
+      width: 100%;
+      text-align: center;
+    }
+
+    .mod h3 {
+      font-size: 18px;
+      color: var(--text);
+      margin-bottom: .75rem;
+    }
+
+    .mod p {
+      font-size: 13px;
+      color: var(--text2);
+      margin-bottom: 1.5rem;
+      line-height: 1.6;
+    }
+
+    .modbtns {
+      display: flex;
+      gap: .75rem;
+    }
+
+    .modbtn {
+      flex: 1;
+      padding: 12px;
+      border-radius: 8px;
+      font-family: 'Georgia', serif;
+      font-size: 14px;
+      font-weight: 700;
+      cursor: pointer;
+      border: 2px solid;
+    }
+
+    .modbtn.conf {
+      background: var(--rb);
+      border-color: var(--rbr);
+      color: var(--rt);
+    }
+
+    .modbtn.canc {
+      background: var(--bg3);
+      border-color: var(--border2);
+      color: var(--text2);
+    }
+
+    /* info toggle */
+    .itog {
+      width: 100%;
+      background: var(--bg3);
+      border: 2px solid var(--border);
+      border-radius: 8px;
+      padding: 10px 14px;
+      font-family: 'Georgia', serif;
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--text2);
+      cursor: pointer;
+      text-align: left;
+      margin-bottom: .5rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .itog:hover {
+      border-color: var(--gold);
+      color: var(--gold);
+    }
+
+    .ipanel {
+      display: none;
+      margin-bottom: 1rem;
+    }
+
+    .ipanel.open {
+      display: block;
+    }
+
+    /* lightbox */
+    .lbx {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, .9);
+      z-index: 100;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 2rem;
+    }
+
+    .lbx.open {
+      display: flex;
+    }
+
+    .lbx img {
+      max-width: 100%;
+      max-height: 80vh;
+      border-radius: 12px;
+      border: 2px solid var(--gold);
+    }
+
+    .lbxc {
+      position: absolute;
+      top: 1rem;
+      right: 1rem;
+      background: var(--bg2);
+      border: 2px solid var(--border);
+      color: var(--text);
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      cursor: pointer;
+      font-size: 20px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    /* confetti & hearts */
+    .cnf {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 50;
+    }
+
+    .hrt {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    /* toast */
+    .toast {
+      position: fixed;
+      bottom: 2rem;
+      left: 50%;
+      transform: translateX(-50%);
+      background: var(--gold);
+      color: #1a1a2e;
+      padding: 12px 24px;
+      border-radius: 30px;
+      font-size: 14px;
+      font-weight: 700;
+      z-index: 200;
+      opacity: 0;
+      transition: opacity .4s;
+      pointer-events: none;
+      white-space: nowrap;
+    }
+
+    .toast.show {
+      opacity: 1;
+    }
+
+    /* gallery */
+    .pgal {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin-top: 6px;
+    }
+
+    .pgal img {
+      width: 80px;
+      height: 80px;
+      object-fit: cover;
+      border-radius: 8px;
+      border: 2px solid var(--border);
+      cursor: pointer;
+    }
+
+    .pgal img:hover {
+      border-color: var(--gold);
+    }
+  </style>
+</head>
+
+<body>
+
+  <canvas class="cnf" id="cnf"></canvas>
+  <canvas class="hrt" id="hrt"></canvas>
+  <input type="file" id="ph-inp" accept="image/*" multiple style="display:none">
+  <input type="file" id="ph-fin" accept="image/*" style="display:none">
+  <div id="toast" class="toast"></div>
+  <div id="lbx" class="lbx"><button class="lbxc" id="lbxc">✕</button><img id="lbxi" src=""></div>
+
+  <div id="home" class="screen active">
+    <div class="bg-pat"></div>
+    <div class="home-inner">
+      <div style="font-size:44px;margin-bottom:1rem;" id="hyarn">🧶</div>
+      <div class="app-logo" id="hlogo">le compagnon du crochet</div>
+      <div class="app-name">SlipStitch</div>
+      <div class="app-sub" id="hsub">chaque maille compte</div>
+      <div class="home-btns">
+        <button class="bp" id="bmyp" onclick="showScreen('projects')">Mes projets</button>
+        <button class="bs" id="bnewp" onclick="startNewProject()">+ Nouveau projet</button>
+        <button class="bset" id="bsett" onclick="showScreen('settings')">⚙️ Paramètres</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="projects" class="screen">
+    <div class="hdr">
+      <button class="bk" onclick="showScreen('home')">← <span id="lhome">Accueil</span></button>
+      <span class="htitle" id="lmyp">Mes projets</span>
+      <button class="ha" id="edmode" onclick="toggleEditMode()">Modifier</button>
+    </div>
+    <div class="sbody" id="pbody"></div>
+  </div>
+
+  <div id="project-view" class="screen">
+    <div class="hdr">
+      <button class="bk" onclick="showScreen('projects')">← <span id="lprojs">Projets</span></button>
+      <span class="htitle" id="vtitle"></span>
+    </div>
+    <div class="sbody" id="vbody"></div>
+  </div>
+
+  <div id="create-project" class="screen">
+    <div class="hdr">
+      <button class="bk" onclick="leaveCreate()">← Retour</button>
+      <span class="htitle" id="ctitle">Nouveau projet</span>
+    </div>
+    <div class="sbody" id="cbody"></div>
+  </div>
+
+  <div id="bravo-screen" class="screen">
+    <div class="hdr">
+      <button class="bk" onclick="showScreen('projects')">← Projets</button>
+      <span class="htitle">Terminé 🎉</span>
+    </div>
+    <div class="bwrap">
+      <div class="bemoji" id="bemoji">🧶</div>
+      <div class="btitle" id="btitle">Bravo !</div>
+      <div class="bsub" id="bsub"></div>
+      <div class="bpharea" id="bpharea"></div>
+      <button class="bp" style="width:220px;" onclick="showScreen('projects')">← Retour aux projets</button>
+      <button class="bs" style="width:220px;" onclick="doRestart()">Recommencer</button>
+    </div>
+  </div>
+
+  <div id="settings" class="screen">
+    <div class="hdr">
+      <button class="bk" onclick="showScreen('home')">← Accueil</button>
+      <span class="htitle">⚙️ Paramètres</span>
+    </div>
+    <div class="sbody" id="setbody"></div>
+  </div>
+
+  <div id="modal" class="modwrap">
+    <div class="mod">
+      <h3 id="modtitle">Confirmer</h3>
+      <p id="modmsg"></p>
+      <div id="modextra"></div>
+      <div class="modbtns">
+        <button class="modbtn canc" id="modcanc">Annuler</button>
+        <button class="modbtn conf" id="modconf">Confirmer</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // ─── DATA ────────────────────────────────────────────────────────────────────
+    const COLORS = [
+      '#f0f0a0', '#e8e87a', '#d0d040', '#a0a010', '#606000',
+      '#d0f0a0', '#b0e060', '#80c820', '#508010', '#284000',
+      '#a0f0a0', '#7ae8a0', '#40c860', '#208040', '#0a4020',
+      '#a0f0e0', '#60d8b8', '#20b890', '#108060', '#084030',
+      '#a0e0f0', '#60c8e8', '#20a0c8', '#107090', '#084050',
+      '#a0c8f0', '#7ab4e8', '#4090d0', '#2060a8', '#103060',
+      '#c0c8f0', '#9090e0', '#7a8ae8', '#4050c8', '#202880',
+      '#e8d0f0', '#c8a0e8', '#a87ad4', '#7a4ab8', '#4a2080',
+      '#f8d0d8', '#f0a0b8', '#e87ad4', '#c040a0', '#8b2070',
+      '#f0c0b0', '#e89090', '#e87a7a', '#d04040', '#a02020',
+      '#f0c8a0', '#e8a07a', '#e07050', '#c84030', '#8b2020',
+      '#f0d0a0', '#e8c07a', '#d4a030', '#a07020', '#6a4010',
+      '#f0e0a0', '#e8d07a', '#d0a830', '#a07820', '#604810',
+      '#e8e0d0', '#d4b896', '#c9a96e', '#b8864a', '#8b5e3c',
+      '#d0d0d0', '#b0b0b0', '#888888', '#505050', '#282828'
+    ];
+    const CNAMES = {
+      '#f0f0a0': 'Jaune pâle', '#e8e87a': 'Jaune citron', '#d0d040': 'Jaune vif', '#a0a010': 'Jaune moutarde', '#606000': 'Kaki doré',
+      '#d0f0a0': 'Vert anis', '#b0e060': 'Chartreuse', '#80c820': 'Vert lime', '#508010': 'Olive', '#284000': 'Kaki',
+      '#a0f0a0': 'Vert pâle', '#7ae8a0': 'Vert menthe', '#40c860': 'Vert vif', '#208040': 'Vert', '#0a4020': 'Vert profond',
+      '#a0f0e0': 'Menthe pâle', '#60d8b8': 'Turquoise', '#20b890': 'Vert émeraude', '#108060': 'Vert forêt', '#084030': 'Vert sombre',
+      '#a0e0f0': 'Bleu glacier', '#60c8e8': 'Cyan', '#20a0c8': 'Bleu canard', '#107090': 'Sarcelle', '#084050': 'Bleu pétrole',
+      '#a0c8f0': 'Bleu ciel pâle', '#7ab4e8': 'Bleu ciel', '#4090d0': 'Bleu vif', '#2060a8': 'Bleu marine', '#103060': 'Marine profond',
+      '#c0c8f0': 'Bleu lavande', '#9090e0': 'Bleu pervenche', '#7a8ae8': 'Bleu lavande vif', '#4050c8': 'Bleu roi', '#202880': 'Bleu nuit',
+      '#e8d0f0': 'Lavande pâle', '#c8a0e8': 'Lilas', '#a87ad4': 'Violet moyen', '#7a4ab8': 'Violet', '#4a2080': 'Indigo',
+      '#f8d0d8': 'Rose pâle', '#f0a0b8': 'Rose vif', '#e87ad4': 'Fuchsia', '#c040a0': 'Magenta', '#8b2070': 'Prune',
+      '#f0c0b0': 'Rose poudré', '#e89090': 'Rose doux', '#e87a7a': 'Rose corail', '#d04040': 'Rouge', '#a02020': 'Rouge sombre',
+      '#f0c8a0': 'Pêche', '#e8a07a': 'Abricot', '#e07050': 'Terracotta', '#c84030': 'Brique', '#8b2020': 'Bordeaux',
+      '#f0d0a0': 'Crème', '#e8c07a': 'Jaune miel', '#d4a030': 'Ocre', '#a07020': 'Ambre', '#6a4010': 'Terre',
+      '#f0e0a0': 'Vanille', '#e8d07a': 'Sable', '#d0a830': 'Or', '#a07820': 'Bronze', '#604810': 'Brun doré',
+      '#e8e0d0': 'Ivoire', '#d4b896': 'Lin', '#c9a96e': 'Beige doré', '#b8864a': 'Caramel', '#8b5e3c': 'Brun chaud',
+      '#d0d0d0': 'Gris clair', '#b0b0b0': 'Gris', '#888888': 'Gris moyen', '#505050': 'Gris foncé', '#282828': 'Anthracite'
+    };
+    const SD = [
+      { fr: 'mr', en: 'mr', sym: '◎', nameFR: 'Magic ring', nameEN: 'Magic ring', sdesc: 'anneau' },
+      { fr: 'ms', en: 'sc', sym: '✕', nameFR: 'Maille serrée', nameEN: 'Single crochet', sdesc: 'croix' },
+      { fr: 'mc', en: 'sl st', sym: '•', nameFR: 'Maille coulée', nameEN: 'Slip stitch', sdesc: 'point' },
+      { fr: 'ml', en: 'ch', sym: '○', nameFR: 'Maille en l\'air', nameEN: 'Chain', sdesc: 'cercle' },
+      { fr: 'aug', en: 'inc', sym: 'V', nameFR: 'Augmentation', nameEN: 'Increase', sdesc: 'V' },
+      { fr: 'dim', en: 'dec', sym: 'Λ', nameFR: 'Diminution', nameEN: 'Decrease', sdesc: 'chapeau' },
+      { fr: 'br', en: 'dc', sym: 'T', nameFR: 'Bride', nameEN: 'Double crochet', sdesc: 'T simple' },
+      { fr: 'db', en: 'hdc', sym: 'T̈', nameFR: 'Demi-bride', nameEN: 'Half double crochet', sdesc: 'T barré' },
+      { fr: 'brd', en: 'tr', sym: 'ȚȚ', nameFR: 'Bride double', nameEN: 'Treble crochet', sdesc: 'T double' },
+    ];
+
+    // ─── SETTINGS & STATE ────────────────────────────────────────────────────────
+    let cfg = JSON.parse(localStorage.getItem('ss12') || '{"lang":"fr","theme":"light","disp":"code","love":false,"favSt":[],"haptic":true}');
+    let projects = []; try { const _p = JSON.parse(localStorage.getItem('ss12p') || '[]'); if (Array.isArray(_p)) projects = _p; } catch (e) { }
+    let folders = []; try { const _f = JSON.parse(localStorage.getItem('ss12f') || '[]'); if (Array.isArray(_f)) folders = _f; } catch (e) { } let curP = null, editMode = false, editPid = null, prevScr = 'home', modCb = null;
+    let nProj = { name: '', color: COLORS[0], notes: '', folderId: null, photos: [] };
+    let cRows = [], cRow = [], editRowIdx = null, infoOpen = false;
+    let subMode = null, subRow = [], pendingRepeat = 1;
+    let heartsRaf = null;
+
+    // ─── HELPERS ─────────────────────────────────────────────────────────────────
+    function LS() { return cfg.lang === 'en' ? SD.map(s => ({ code: s.en, label: s.en, full: s.nameEN, sym: s.sym })) : SD.map(s => ({ code: s.fr, label: s.fr, full: s.nameFR, sym: s.sym })); }
+    function UL() { return cfg.lang; }
+    const UI = {
+      fr: { home: 'Accueil', projs: 'Projets', mypj: 'Mes projets', newpj: '+ Nouveau projet', sett: 'Paramètres', mod: 'Modifier', done: 'Terminé', row: 'Rang', st: 'Maille', nxt: 'suivant', prv: 'précédent', fin: '✓ Terminer', addr: 'Valider rang', updr: 'Mettre à jour', delr: 'Suppr. rang', undo: 'Suppr. dernière', nofd: 'Sans dossier', sub: 'chaque maille compte', logo: 'le compagnon du crochet', glob: 'Progression globale', empty: 'Vous n\'avez aucun projet.', del: 'Supprimer', leavetit: 'Quitter ?', leavemsg: 'Modifications non sauvegardées.', bravo: 'Bravo !', bsub: 'Vous avez terminé le projet : ', bend: 'Quel beau travail !', newt: 'Nouveau projet', modt: 'Modifier :', scnt: 'maille(s)', repp: 'Répéter', repps: '× dernier', repr: 'Répéter rang', reprs: 'fois', clr: 'Effacer', nost: 'Aucune maille', pnm: 'Nom du projet', pnmph: 'Ex: Bonnet d\'hiver...', not: 'Notes', notph: 'Fil, crochet, taille...', col: 'Couleur du fil', clkr: '↓ Cliquer sur un rang pour le modifier', newf: 'Nouveau dossier', movf: 'Déplacer', delall: 'Tout effacer', delalc: 'Tous vos projets seront supprimés.', theme: 'Thème', dark: 'Sombre', light: 'Clair', love: 'Love 💖', lang: 'Langue', scope: 'Portée', scopest: 'Points uniquement', scopefu: 'Interface complète', disp: 'Affichage points', dispc: 'Codes', disps: 'Symboles', data: 'Données', ver: 'SlipStitch v1 · 🧶', infob: 'Informations', foldel: 'Supprimer dossier', foldelc: 'Les projets seront retirés.', restart: 'Recommencer', fnbd: 'Terminé', addph: 'Photos', addphf: 'Photo terminé', refph: 'Photos', eggmsg: '💖 Mode Love débloqué !', refsect: 'Rangs' },
+      en: { home: 'Home', projs: 'Projects', mypj: 'My projects', newpj: '+ New project', sett: 'Settings', mod: 'Edit', done: 'Done', row: 'Row', st: 'Stitch', nxt: 'row', prv: 'previous', fin: '✓ Finish', addr: 'Save row', updr: 'Update', delr: 'Del. row', undo: 'Del. last', nofd: 'No folder', sub: 'every stitch counts', logo: 'the crochet companion', glob: 'Overall progress', empty: 'No projects yet.', del: 'Delete', leavetit: 'Leave?', leavemsg: 'Unsaved changes will be lost.', bravo: 'Well done !', bsub: 'You finished the project : ', bend: 'Beautiful work!', newt: 'New project', modt: 'Edit:', scnt: 'stitch(es)', repp: 'Repeat', repps: '× last', repr: 'Repeat row', reprs: 'times', clr: 'Clear', nost: 'No stitches', pnm: 'Project name', pnmph: 'E.g. Winter hat...', not: 'Notes', notph: 'Yarn, hook, size...', col: 'Yarn colour', clkr: '↓ Tap a row to edit', newf: 'New folder', movf: 'Move', delall: 'Reset all', delalc: 'All projects will be deleted.', theme: 'Theme', dark: 'Dark', light: 'Light', love: 'Love 💖', lang: 'Language', scope: 'Scope', scopest: 'Stitches only', scopefu: 'Full interface', disp: 'Stitch display', dispc: 'Codes', disps: 'Symbols', data: 'Data', ver: 'SlipStitch v12 · 🧶', infob: 'Infomations', foldel: 'Delete folder', foldelc: 'Projects will be removed.', restart: 'Start over', fnbd: 'Finished', addph: 'Photos', addphf: 'Finished photo', refph: 'Photos', eggmsg: '💖 Love mode unlocked!', refsect: 'Rows' }
+    };
+    function t(k) { const u = UL(); return (UI[u] && UI[u][k]) || UI.fr[k] || k; }
+    function save() { localStorage.setItem('ss12p', JSON.stringify(projects)); localStorage.setItem('ss12f', JSON.stringify(folders)); localStorage.setItem('ss12', JSON.stringify(cfg)); }
+    function hapticRow() { if (cfg.haptic && navigator.vibrate) navigator.vibrate([40, 30, 40]); }
+    function toggleHaptic() { cfg.haptic = !cfg.haptic; save(); renderSettings(); }
+    function toggleFav(code) {
+      if (!cfg.favSt) cfg.favSt = [];
+      const idx = cfg.favSt.indexOf(code);
+      if (idx > -1) cfg.favSt.splice(idx, 1);
+      else cfg.favSt.push(code);
+      save();
+      renderSettings();
+    }
+    function isFav(code) { return cfg.favSt && cfg.favSt.indexOf(code) > -1; }
+
+    // ─── THEME ───────────────────────────────────────────────────────────────────
+    function applyTheme() {
+      document.body.classList.remove('light', 'love');
+      if (cfg.theme === 'light') document.body.classList.add('light');
+      if (cfg.theme === 'love') document.body.classList.add('love');
+      heartsUpdate();
+    }
+    applyTheme();
+
+    function heartsUpdate() {
+      const c = document.getElementById('hrt');
+      if (cfg.theme !== 'love') { c.style.display = 'none'; if (heartsRaf) { cancelAnimationFrame(heartsRaf); heartsRaf = null; } return; }
+      c.style.display = 'block'; c.width = window.innerWidth; c.height = window.innerHeight;
+      const ctx = c.getContext('2d');
+      const H = Array.from({ length: 16 }, () => ({ x: Math.random() * c.width, y: c.height + Math.random() * c.height, s: Math.random() * 1 + .4, sp: Math.random() * .5 + .2, sw: Math.random() * 2 - 1, ph: Math.random() * Math.PI * 2, op: Math.random() * .35 + .15 }));
+      let fr = 0;
+      function draw() {
+        ctx.clearRect(0, 0, c.width, c.height);
+        H.forEach(h => {
+          h.y -= h.sp; h.x += Math.sin(fr * .02 + h.ph) * h.sw; if (h.y < -40) { h.y = c.height + 40; h.x = Math.random() * c.width; }
+          ctx.save(); ctx.globalAlpha = h.op; ctx.fillStyle = '#e060a0';
+          const sz = 18 * h.s, x = h.x, y = h.y;
+          ctx.beginPath(); ctx.moveTo(x, y); ctx.bezierCurveTo(x, y - sz * .3, x - sz * .5, y - sz * .8, x - sz * .5, y - sz * .5); ctx.bezierCurveTo(x - sz * .5, y - sz * 1.1, x, y - sz * 1, x, y - sz * .7); ctx.bezierCurveTo(x, y - sz * 1, x + sz * .5, y - sz * 1.1, x + sz * .5, y - sz * .5); ctx.bezierCurveTo(x + sz * .5, y - sz * .8, x, y - sz * .3, x, y); ctx.closePath(); ctx.fill(); ctx.restore();
+        }); fr++; heartsRaf = requestAnimationFrame(draw);
+      } draw();
+    }
+    window.addEventListener('resize', () => { if (cfg.theme === 'love') { const c = document.getElementById('hrt'); c.width = window.innerWidth; c.height = window.innerHeight; } });
+
+    // ─── CONFETTI ────────────────────────────────────────────────────────────────
+    function confetti() {
+      const c = document.getElementById('cnf'); const ctx = c.getContext('2d');
+      c.width = window.innerWidth; c.height = window.innerHeight;
+      const col = cfg.theme === 'love' ? ['#e060a0', '#f090c0', '#c040a0'] : ['#c9a96e', '#e87a7a', '#7ab4e8', '#7ae8a0', '#e87ad4'];
+      const P = Array.from({ length: 80 }, () => ({ x: Math.random() * c.width, y: -10, r: Math.random() * 6 + 3, c: col[Math.floor(Math.random() * col.length)], s: Math.random() * 3 + 1, a: Math.random() * Math.PI * 2, ar: Math.random() * .2 - .1 }));
+      let fr = 0; function draw() { ctx.clearRect(0, 0, c.width, c.height); P.forEach(p => { ctx.beginPath(); ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2); ctx.fillStyle = p.c; ctx.fill(); p.y += p.s; p.x += Math.sin(p.a) * 1.5; p.a += p.ar; }); fr++; if (fr < 120) requestAnimationFrame(draw); else ctx.clearRect(0, 0, c.width, c.height); } draw();
+    }
+
+    // ─── LIGHTBOX ────────────────────────────────────────────────────────────────
+    document.getElementById('lbxc').onclick = () => document.getElementById('lbx').classList.remove('open');
+    document.getElementById('lbx').onclick = (e) => { if (e.target === document.getElementById('lbx')) document.getElementById('lbx').classList.remove('open'); };
+    function openLB(src) { document.getElementById('lbxi').src = src; document.getElementById('lbx').classList.add('open'); }
+
+    // ─── TOAST ───────────────────────────────────────────────────────────────────
+    function showToast(msg) { const el = document.getElementById('toast'); el.textContent = msg; el.classList.add('show'); setTimeout(() => el.classList.remove('show'), 3000); }
+
+    // ─── MODAL ───────────────────────────────────────────────────────────────────
+    function showModal(title, msg, onOk, from, extra) {
+      prevScr = from || 'home';
+      document.getElementById('modtitle').textContent = title;
+      document.getElementById('modmsg').textContent = msg;
+      document.getElementById('modextra').innerHTML = extra || '';
+      modCb = onOk;
+      document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+      document.getElementById('modal').classList.add('open');
+      document.getElementById('modal').style.display = 'flex';
+      document.getElementById('modconf').onclick = () => { closeModal(); if (modCb) modCb(); };
+      document.getElementById('modcanc').onclick = () => { closeModal(); showScreen(prevScr); };
+    }
+    function closeModal() { document.getElementById('modal').style.display = 'none'; document.getElementById('modal').classList.remove('open'); }
+
+    // ─── NAVIGATION ──────────────────────────────────────────────────────────────
+    function showScreen(id) {
+      closeModal();
+      document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+      const el = document.getElementById(id);
+      if (!el) return;
+      el.classList.add('active');
+      try {
+        if (id === 'projects') { editMode = false; renderProjects(); }
+        if (id === 'settings') renderSettings();
+      } catch (e) { console.error('renderError', e); }
+      updateLabels();
+    }
+    function updateLabels() {
+      const yarn = cfg.theme === 'love' ? '💖' : '🧶';
+      const el = document.getElementById('hyarn'); if (el) el.textContent = yarn;
+      setT('hlogo', t('logo')); setT('hsub', t('sub'));
+      setT('bmyp', t('mypj')); setT('bnewp', t('newpj'));
+      const bs = document.getElementById('bsett'); if (bs) bs.innerHTML = '⚙️ ' + t('sett');
+      setT('lhome', t('home')); setT('lmyp', t('mypj')); setT('lprojs', t('projs'));
+      const em = document.getElementById('edmode'); if (em) em.textContent = editMode ? t('done') : t('mod');
+    }
+    function setT(id, v) { const el = document.getElementById(id); if (el) el.textContent = v; }
+
+    // ─── UTILITIES ───────────────────────────────────────────────────────────────
+    function expRows(rows) { const o = []; (rows || []).forEach(r => { for (let i = 0; i < (r.repeat || 1); i++)o.push(r); }); return o; }
+    function expStitches(stitches) {
+      const out = [];
+      (stitches || []).forEach(s => {
+        if (typeof s === 'string' && s.includes('×[')) {
+          // ex: 4×[ms,br,ms]
+          const m = s.match(/^(\d+)×\[(.+)\]$/);
+          if (m) {
+            const n = parseInt(m[1]);
+            const inner = m[2].split(',').map(x => x.trim());
+            for (let i = 0; i < n; i++)inner.forEach(st => out.push(st));
+          } else out.push(s);
+        } else if (typeof s === 'string' && s.startsWith('[')) {
+          // ex: [ms,br,ms] en1
+          const m = s.match(/^\[(.+)\]\s*en1$/);
+          if (m) {
+            const inner = m[1].split(',').map(x => x.trim());
+            inner.forEach(st => out.push(st));
+          } else out.push(s);
+        } else out.push(s);
+      });
+      return out;
+    }
+
+    // Parse un rang en "pastilles" — chaque pastille est {type, stitches[], display}
+    function parseStitches(stitches) {
+      const out = [];
+      (stitches || []).forEach(s => {
+        if (typeof s === 'string' && s.includes('×[')) {
+          const m = s.match(/^(\d+)×\[(.+)\]$/);
+          if (m) {
+            const n = parseInt(m[1]);
+            const inner = m[2].split(',').map(x => x.trim());
+            for (let i = 0; i < n; i++)out.push({ type: 'rep', stitches: inner, display: s, repIdx: i, repTotal: n });
+          } else out.push({ type: 'simple', stitches: [s], display: s });
+        } else if (typeof s === 'string' && s.match(/^\[.+\]\s*en1$/)) {
+          const m = s.match(/^\[(.+)\]\s*en1$/);
+          if (m) {
+            const inner = m[1].split(',').map(x => x.trim());
+            out.push({ type: 'en1', stitches: inner, display: s });
+          } else out.push({ type: 'simple', stitches: [s], display: s });
+        } else {
+          out.push({ type: 'simple', stitches: [s], display: s });
+        }
+      });
+      return out;
+    }
+
+    // Compte le total de mailles d'un tableau de pastilles
+    function countStitches(pastilles) {
+      return pastilles.reduce((a, p) => a + p.stitches.length, 0);
+    }
+
+    // Trouve la pastille et sous-index à partir d'un index global de maille
+    function findPastille(pastilles, globalIdx) {
+      let acc = 0;
+      for (let i = 0; i < pastilles.length; i++) {
+        const len = pastilles[i].stitches.length;
+        if (globalIdx < acc + len) return { pIdx: i, subIdx: globalIdx - acc };
+        acc += len;
+      }
+      return { pIdx: pastilles.length - 1, subIdx: 0 };
+    }
+
+    function isDone(p) {
+      const a = expRows(p.rows); if (!a.length) return false;
+      const lastRow = a[a.length - 1];
+      const pastilles = parseStitches(lastRow.stitches);
+      const total = countStitches(pastilles);
+      const globalIdx = (p.currentStitch || 0) * 1;
+      // on est done quand on a passé toutes les mailles du dernier rang
+      const doneGlobal = pastilles.slice(0, p.currentStitch || 0).reduce((a, p) => a + p.stitches.length, 0) + (p.currentSubStitch || 0);
+      return (p.currentRow || 0) >= a.length - 1 && doneGlobal >= total;
+    }
+    function slbl(code) { if (code && (code.startsWith('[') || code.includes('×['))) return code; const s = LS().find(x => x.code === code); if (!s) return code; return s.code; } function sfull(code) { if (code && (code.startsWith('[') || code.includes('×['))) return code; const s = LS().find(x => x.code === code); return s ? s.full : code; }
+    function compRow(sts) { if (!sts || !sts.length) return { text: '', total: 0 }; const p = []; let i = 0; while (i < sts.length) { let j = i + 1; while (j < sts.length && sts[j] === sts[i]) j++; p.push((j - i) > 1 ? `${slbl(sts[i])}×${j - i}` : slbl(sts[i])); i = j; } return { text: p.join(', '), total: sts.length }; }
+    function liveDisp(sts) { if (!sts || !sts.length) return `<span style="color:var(--text3);font-size:12px;font-style:italic;">${t('nost')}</span>`; const g = []; let i = 0; while (i < sts.length) { let j = i + 1; while (j < sts.length && sts[j] === sts[i]) j++; g.push({ code: sts[i], cnt: j - i }); i = j; } return g.map(x => `<div class="sgrp"><span class="sglbl">${slbl(x.code)}</span><span class="sgcnt">${x.cnt}</span></div>`).join(''); }
+    function checkEgg(name) { if (["missbouboule's project", "missbouboule"].includes(name.trim().toLowerCase()) && !cfg.love) { cfg.love = true; save(); showToast(t('eggmsg')); renderSettings(); } }
+    function compressImg(dataUrl, maxW, maxH, quality) {
+      return new Promise(res => {
+        const img = new Image();
+        img.onload = () => {
+          let w = img.width, h = img.height;
+          if (w > maxW) { h = Math.round(h * maxW / w); w = maxW; }
+          if (h > maxH) { w = Math.round(w * maxH / h); h = maxH; }
+          const c = document.createElement('canvas'); c.width = w; c.height = h;
+          c.getContext('2d').drawImage(img, 0, 0, w, h);
+          res(c.toDataURL('image/jpeg', quality));
+        };
+        img.src = dataUrl;
+      });
+    }
+
+
+
+
+    // ─── PHOTOS ──────────────────────────────────────────────────────────────────
+    document.getElementById('ph-inp').onchange = function (e) {
+      const files = Array.from(e.target.files); if (!files.length) return;
+      Promise.all(files.map(f => new Promise(res => { const r = new FileReader(); r.onload = ev => compressImg(ev.target.result, 800, 800, 0.7).then(res); r.readAsDataURL(f); }))).then(res => {
+        nProj.photos = [...(nProj.photos || []), ...res];
+        const list = document.querySelector('.mphlist');
+        if (list) {
+          const phHTML = nProj.photos.map((ph, i) => `<div class="mphitem"><img src="${ph}" class="mphimg" onclick="openLB('${ph}')"><button class="mphdel" onclick="removePhoto(${i})">✕</button></div>`).join('');
+          list.innerHTML = phHTML + `<div class="addph" onclick="document.getElementById('ph-inp').click()">+</div>`;
+        }
+      });
+      e.target.value = '';
+    };
+    document.getElementById('ph-fin').onchange = function (e) {
+      const f = e.target.files[0]; if (!f) return;
+      const r = new FileReader(); r.onload = ev => {
+        compressImg(ev.target.result, 800, 800, 0.7).then(compressed => {
+          if (curP) { curP.finishedPhoto = compressed; save(); }
+          const a = document.getElementById('bpharea');
+          if (a) {
+            const ph = curP.finishedPhoto;
+            a.innerHTML = `<img src="${ph}" style="width:100%;border-radius:12px;border:2px solid var(--gbr);object-fit:cover;max-height:200px;cursor:pointer;display:block;" onclick="openLB('${ph}')"><button class="bs" style="width:100%;margin-top:.5rem;padding:10px;font-size:13px;" onclick="document.getElementById('ph-fin').click()">Changer</button>`;
+          }
+        });
+        const a = document.getElementById('bpharea');
+        if (a) {
+          const ph = curP.finishedPhoto;
+          a.innerHTML = `<img src="${ph}" style="width:100%;border-radius:12px;border:2px solid var(--gbr);object-fit:cover;max-height:200px;cursor:pointer;display:block;" onclick="openLB('${ph}')"><button class="bs" style="width:100%;margin-top:.5rem;padding:10px;font-size:13px;" onclick="document.getElementById('ph-fin').click()">Changer</button>`;
+        }
+      }; r.readAsDataURL(f);
+      e.target.value = '';
+    };
+    function removePhoto(i) { nProj.photos.splice(i, 1); renderCreate(); }
+    function renderBravoPhoto() {
+      const a = document.getElementById('bpharea'); if (!a) return;
+      const ph = curP && curP.finishedPhoto;
+      if (ph) a.innerHTML = `<img src="${ph}" style="width:100%;border-radius:12px;border:2px solid var(--gbr);object-fit:cover;max-height:200px;cursor:pointer;display:block;" onclick="openLB('${ph}')"><button class="bs" style="width:100%;margin-top:.5rem;padding:10px;font-size:13px;" onclick="document.getElementById('ph-fin').click()">Changer</button>`;
+      else a.innerHTML = `<button class="phupl" style="width:220px;" onclick="document.getElementById('ph-fin').click()">${t('addphf')}</button>`;
+    }
+
+    // ─── PROJECTS LIST ───────────────────────────────────────────────────────────
+    function toggleEditMode() { editMode = !editMode; document.getElementById('edmode').textContent = editMode ? t('done') : t('mod'); renderProjects(); }
+    function renderProjects() {
+      if (!Array.isArray(projects)) projects = [];
+      if (!Array.isArray(folders)) folders = [];
+      const body = document.getElementById('pbody'); let html = '';
+      folders.forEach(f => {
+        const fps = projects.filter(p => p.folderId === f.id);
+        html += `<div class="fcard"><div class="fhdr" onclick="toggleFolder('${f.id}')">
+      <span style="font-size:18px;">${f.open ? '📂' : '📁'}</span>
+      <span class="fname">${f.name}</span>
+      <span class="fmeta">${fps.length} projet${fps.length !== 1 ? 's' : ''}</span>
+      <button class="fdel" onclick="event.stopPropagation();delFolder('${f.id}')">🗑</button>
+      <span style="color:var(--gold);font-size:13px;${f.open ? 'transform:rotate(90deg);display:inline-block' : ''}">▶</span>
+    </div>
+    ${f.open ? `<div class="flist">${fps.length ? fps.map(p => pCard(p, true)).join('') : `<div class="fempty">Aucun projet dans ce dossier.</div>`}</div>` : ''}</div>`;
+      });
+      const nof = projects.filter(p => !p.folderId);
+      if (nof.length) { if (folders.length) html += `<div style="font-size:11px;color:var(--text3);letter-spacing:2px;text-transform:uppercase;margin:.75rem 0 .5rem;">${t('nofd')}</div>`; nof.forEach(p => html += pCard(p, false)); }
+      if (!projects.length && !folders.length) html = `<div style="text-align:center;padding:3rem 2rem;color:var(--text3);"><div style="font-size:56px;">${cfg.theme === 'love' ? '💖' : '🧶'}</div><p style="font-size:15px;font-style:italic;margin-top:.75rem;">${t('empty')}</p></div>`;
+      html += `<div style="display:flex;gap:8px;margin-top:1rem;">
+    <button class="ab out" style="flex:1;padding:10px;font-size:12px;" onclick="newFolder()">📁 ${t('newf')}</button>
+    ${folders.length ? `<button class="ab out" style="flex:1;padding:10px;font-size:12px;" onclick="moveFolder()">📂 ${t('movf')}</button>` : ''}
+  </div>`;
+      body.innerHTML = html;
+    }
+    function pCard(p, inside) {
+      const a = expRows(p.rows), total = a.reduce((s, r) => s + countStitches(parseStitches(r.stitches)), 0);
+      const ri = p.currentRow || 0, pIdx = p.currentStitch || 0, subIdx = p.currentSubStitch || 0;
+      const curRowPastilles = a[ri] ? parseStitches(a[ri].stitches) : [];
+      const doneInRow = curRowPastilles.slice(0, pIdx).reduce((a, p) => a + p.stitches.length, 0) + subIdx;
+      const done = a.slice(0, ri).reduce((s, r) => s + countStitches(parseStitches(r.stitches)), 0) + doneInRow;
+      const pct = total ? Math.round(done / total * 100) : 0;
+      const fin = isDone(p);
+      const thumb = p.finishedPhoto || (p.photos && p.photos[0]) || null; return `<div class="pcard${editMode ? ' emode' : ''}${inside ? ' ' + 'inside' : ''}${fin ? ' done' : ''}" onclick="clickProj('${p.id}')">
+    ${editMode ? `<span class="ebadge">✏️ ${t('mod')}</span>` : ''}
+    <div class="pcard-hdr">
+      <div style="display:flex;align-items:center;gap:10px;flex:1;min-width:0;">
+        ${thumb ? `<img src="${thumb}" style="width:44px;height:44px;border-radius:6px;object-fit:cover;border:2px solid var(--border);flex-shrink:0;">` : ''}
+        <span class="pname" style="white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${p.name}</span>
+      </div>
+      <span class="cdot" style="background:${p.color};margin-left:8px;"></span>
+    </div>
+    <div class="pbar"><div class="pbfill${fin ? ' c' : ''}" style="width:${pct}%"></div></div>
+   <div class="pmeta"><span>${a.length} rang${a.length !== 1 ? 's' : ''}</span><span>${pct}%</span></div>${p.notes ? `<div class="pnotes">${p.notes}</div>` : ''}
+  </div>`;
+    }
+    function toggleFolder(id) { const f = folders.find(x => x.id === id); if (f) { f.open = !f.open; save(); renderProjects(); } }
+    function delFolder(id) {
+      const f = folders.find(x => x.id === id); if (!f) return;
+      showModal(`${t('foldel')} "${f.name}" ?`, t('foldelc'), () => {
+        projects.forEach(p => { if (p.folderId === id) p.folderId = null; });
+        folders = folders.filter(x => x.id !== id); save(); showScreen('projects');
+      }, 'projects');
+    }
+    function newFolder() {
+      showModal(t('newf'), '', () => {
+        const v = document.getElementById('fi-inp').value.trim();
+        if (!v) return;
+        if (folders.find(f => f.name.toLowerCase() === v.toLowerCase())) { alert('Un dossier avec ce nom existe déjà.'); return; }
+        folders.push({ id: Date.now().toString(), name: v, open: true }); save(); showScreen('projects');
+      }, 'projects', `<input id="fi-inp" class="fi" placeholder="Ex: Vêtements, Cadeaux..." style="margin-bottom:1rem;">`);
+    }
+    function moveFolder() {
+      if (!folders.length) return;
+      const po = projects.map(p => `<option value="${p.id}">${p.name}</option>`).join('');
+      const fo = folders.map(f => `<option value="${f.id}">${f.name}</option>`).join('') + `<option value="">${t('nofd')}</option>`;
+      showModal(t('movf'), '', () => {
+        const pi = document.getElementById('mvp').value, fi = document.getElementById('mvf').value;
+        const p = projects.find(x => x.id === pi); if (p) p.folderId = fi || null; save(); showScreen('projects');
+      }, 'projects', `<select id="mvp" class="fsel" style="margin-bottom:8px;">${po}</select><select id="mvf" class="fsel" style="margin-bottom:1rem;">${fo}</select>`);
+    }
+    function clickProj(id) { const p = projects.find(x => x.id === id); if (!p) return; if (editMode) { editMode = false; startEdit(p); } else openProj(p); }
+    function openProj(p) { curP = p; infoOpen = true; document.getElementById('vtitle').textContent = p.name; renderView(); showScreen('project-view'); }
+
+    // ─── PROJECT VIEW ────────────────────────────────────────────────────────────
+
+    const ALTCOLORS = [
+      { bg: 'var(--ab)', border: 'var(--abr)', text: 'var(--at)' },
+      { bg: 'var(--pb)', border: 'var(--pbr)', text: 'var(--pt)' }
+    ];
+    const EN1COLOR = { bg: 'var(--gb)', border: 'var(--gbr)', text: 'var(--gt)' };
+
+    function renderPastilles(pastilles, pIdx, subIdx) {
+      let altIdx = 0;
+      let lastDisplay = null;
+
+      return pastilles.map((pastille, pi) => {
+        const isGroupDone = pi < pIdx;
+        const isGroupCur = pi === pIdx;
+
+        if (pastille.type === 'en1') {
+          const col = { bg: 'var(--gb)', border: 'var(--gbr)', text: 'var(--gt)' };
+          const innerHTML = pastille.stitches.map((s, si) => {
+            const isCur = isGroupCur && si === subIdx;
+            const isDn = isGroupDone || (isGroupCur && si < subIdx);
+            const bg = isDn ? 'var(--bg3)' : isCur ? col.bg : 'var(--bg2)';
+            const border = isDn ? 'var(--border)' : col.border;
+            const textCol = isDn ? 'var(--text3)' : isCur ? col.text : col.border;
+            const scale = isCur ? 'transform:scale(1.12);font-weight:700;' : '';
+            return `<span class="stok" style="background:${bg};border-color:${border};color:${textCol};${scale}">${slbl(s)}</span>`;
+          }).join('');
+          const groupBg = isGroupDone ? 'var(--bg3)' : isGroupCur ? 'var(--gb)' : 'var(--bg2)'; const groupBorder = isGroupDone ? 'var(--border)' : col.border;
+          return `<div style="display:inline-flex;flex-direction:column;align-items:center;gap:4px;background:${groupBg};border:2px solid ${groupBorder};border-radius:12px;padding:6px 8px;">
+        <span style="font-size:10px;font-weight:700;letter-spacing:1.5px;color:${isGroupDone ? 'var(--text3)' : col.text};">EN 1</span>
+        <div style="display:flex;flex-wrap:wrap;gap:4px;justify-content:center;">${innerHTML}</div>
+      </div>`;
+
+        } else if (pastille.type === 'rep') {
+          const col = ALTCOLORS[pastille.repIdx % 2];
+          const isRepDone = isGroupDone;
+          const isRepCur = isGroupCur;
+          const innerHTML = pastille.stitches.map((s, si) => {
+            const isCur = isRepCur && si === subIdx;
+            const isDn = isRepDone || (isRepCur && si < subIdx);
+            const bg = isDn ? 'var(--bg3)' : isCur ? col.bg : 'var(--bg2)';
+            const border = isDn ? 'var(--border)' : col.border;
+            const textCol = isDn ? 'var(--text3)' : isCur ? col.text : col.border;
+            const scale = isCur ? 'transform:scale(1.12);font-weight:700;' : '';
+            return `<span class="stok" style="background:${bg};border-color:${border};color:${textCol};${scale}">${slbl(s)}</span>`;
+          }).join('');
+          const groupBg = isRepDone ? 'var(--bg3)' : isRepCur ? `rgba(0,0,0,.08)` : 'transparent';
+          const groupBorder = isRepDone ? 'var(--border)' : col.border;
+          return `<div style="display:inline-flex;flex-direction:column;align-items:center;gap:4px;background:${groupBg};border:2px solid ${groupBorder};border-radius:12px;padding:6px 8px;">
+        <div style="display:flex;flex-wrap:wrap;gap:4px;justify-content:center;">${innerHTML}</div>
+      </div>`;
+
+        } else {
+          if (pastille.display !== lastDisplay) { altIdx = (altIdx + 1) % 2; lastDisplay = pastille.display; }
+          const col = ALTCOLORS[altIdx];
+          const isCur = isGroupCur && subIdx === 0;
+          const isDn = isGroupDone;
+          const bg = isDn ? 'var(--bg3)' : isCur ? col.bg : 'var(--bg2)';
+          const border = isDn ? 'var(--border)' : col.border;
+          const textCol = isDn ? 'var(--text3)' : isCur ? col.text : col.border;
+          const scale = isCur ? 'transform:scale(1.12);font-weight:700;' : '';
+          return `<span class="stok" style="background:${bg};border-color:${border};color:${textCol};${scale}">${slbl(pastille.display)}</span>`;
+        }
+      }).join('');
+    }
+
+    function renderCurrentStInfo(pastilles, pIdx, subIdx, doneInRow) {
+      const p = pastilles[pIdx]; if (!p) return '';
+      const total = countStitches(pastilles);
+      const cur = p.stitches[subIdx] || '';
+      let info = `${t('st')} ${doneInRow + 1}/${total}`;
+      if (p.type === 'en1') info += ` — <strong style="color:var(--gt)">${sfull(cur)}</strong> <span style="color:var(--text3);font-size:11px;">(en 1 maille)</span>`;
+      else if (p.type === 'rep') info += ` — <strong style="color:var(--gold)">${sfull(cur)}</strong> <span style="color:var(--text3);font-size:11px;">(motif ${p.repIdx + 1}/${p.repTotal})</span>`;
+      else info += ` — <strong style="color:var(--gold)">${sfull(cur)}</strong>`;
+      return info;
+    }
+
+    function renderNextBox(pastilles, pIdx, subIdx) {
+      const pastille = pastilles[pIdx]; if (!pastille) return '';
+      const cur = pastille.stitches[subIdx] || '';
+
+      let streak = 0;
+      outer: for (let pi = pIdx; pi < pastilles.length; pi++) {
+        const p = pastilles[pi];
+        const startSi = pi === pIdx ? subIdx : 0;
+        for (let si = startSi; si < p.stitches.length; si++) {
+          if (p.stitches[si] === cur && p.type === pastille.type) streak++;
+          else break outer;
+        }
+      }
+
+      // même logique de couleur que renderPastilles
+      let col;
+      if (pastille.type === 'en1') {
+        col = { bg: 'var(--gb)', border: 'var(--gbr)', text: 'var(--gt)' };
+      } else if (pastille.type === 'rep') {
+        col = ALTCOLORS[pastille.repIdx % 2];
+      } else {
+        // recalcule l'altIdx pour cette pastille comme dans renderPastilles
+        let altIdx = 0;
+        let lastDisplay = null;
+        for (let pi = 0; pi <= pIdx; pi++) {
+          const p = pastilles[pi];
+          if (p.type === 'simple' && p.display !== lastDisplay) {
+            altIdx = (altIdx + 1) % 2;
+            lastDisplay = p.display;
+          }
+        }
+        col = ALTCOLORS[altIdx];
+      }
+
+      let detail = '';
+      if (pastille.type === 'en1') {
+        const remaining = pastille.stitches.slice(subIdx);
+        detail = `[${remaining.map(s => slbl(s)).join('·')}] EN1`;
+      } else if (pastille.type === 'rep') {
+        const repsLeft = pastille.repTotal - pastille.repIdx;
+        const motif = pastille.stitches.map(s => slbl(s)).join('·');
+        detail = `[${motif}]×${repsLeft}`;
+      } else {
+        detail = streak > 1 ? `×${streak}` : '';
+      }
+
+      return `<div style="background:${col.bg};border:2px solid ${col.border};border-radius:10px;width:72px;display:flex;flex-direction:column;align-items:center;justify-content:center;flex-shrink:0;gap:2px;overflow:hidden;padding:6px;">
+    ${pastille.type === 'en1' ? `<div style="font-size:9px;font-weight:700;letter-spacing:1px;color:${col.text};opacity:.8;">EN 1</div>` : ''}
+    <div style="font-size:22px;font-weight:700;color:${col.text};line-height:1;">${slbl(cur)}</div>
+    ${detail ? `<div style="font-size:9px;color:${col.text};opacity:.85;text-align:center;line-height:1.2;padding:0 4px;word-break:break-all;">${detail}</div>` : ''}
+  </div>`;
+    }
+
+    function renderView() {
+      const p = curP; if (!p) return;
+      const a = expRows(p.rows), ri = p.currentRow || 0, cs = p.currentStitch || 0;
+      const row = a[ri], left = a.length - ri, fin = isDone(p);
+      const total = a.reduce((s, r) => s + countStitches(parseStitches(r.stitches)), 0);
+      const donePrev = a.slice(0, ri).reduce((s, r) => s + countStitches(parseStitches(r.stitches)), 0);
+      const pastilles = row ? parseStitches(row.stitches) : [];
+      const pIdx = p.currentStitch || 0;
+      const subIdx = p.currentSubStitch || 0;
+      const doneInRow = pastilles.slice(0, pIdx).reduce((a, p) => a + p.stitches.length, 0) + subIdx;
+      const done = donePrev + doneInRow;
+      const pct = total ? Math.round(done / total * 100) : 0;
+      const cn = CNAMES[p.color] || p.color;
+      const fn = p.folderId ? (folders.find(f => f.id === p.folderId) || {}).name || '—' : '—';
+      const allPh = [...(p.photos || []), ...(p.finishedPhoto ? [p.finishedPhoto] : [])];
+      const phHTML = allPh.length ? `<div class="drow"><span class="dico">📷</span><div style="width:100%;"><div class="dlbl">${t('refph')}</div><div class="pgal">${allPh.map(ph => `<img src="${ph}" onclick="openLB('${ph}')">`).join('')}</div></div></div>` : '';
+
+      const info = `<button class="itog" onclick="infoOpen=!infoOpen;renderView()">${t('infob')} <span>${infoOpen ? '▲' : '▼'}</span></button>
+  <div class="ipanel${infoOpen ? ' open' : ''}"><div class="dcard">
+    <div class="drow"><span class="dico">🎨</span><div><div class="dlbl">${t('col')}</div><div style="display:flex;align-items:center;gap:8px;margin-top:2px;"><div class="dcdot" style="background:${p.color}"></div><span class="dval">${cn}</span></div></div></div>
+    ${p.notes ? `<div class="drow"><span class="dico">📝</span><div><div class="dlbl">${t('not')}</div><div class="dvalnt">${p.notes}</div></div></div>` : ''}
+    ${phHTML}
+    <div class="drow"><span class="dico">📊</span><div><div class="dlbl">${t('refsect')}</div><div class="dval">${a.length} rangs · ${total} mailles</div></div></div></div></div>`;
+
+      const prog = `<div class="gprog"><div class="plbl"><span>${t('glob')}</span><strong>${pct}%</strong></div><div class="pbar2"><div class="pbfill2" style="width:${pct}%"></div></div>
+  <div style="display:flex;justify-content:space-between;margin-top:.5rem;font-size:11px;color:var(--text3);"><span>${done}/${total} ${t('st')}s</span><span>${left} rang${left !== 1 ? 's' : ''}</span></div></div>`;
+
+      const finblk = fin ? `<div class="fovl"><div class="fovle">${cfg.theme === 'love' ? '💖' : '🎉'}</div>
+    <div class="fovlt">${t('bravo')}</div>
+    <div class="fovls">${t('bsub')} <strong>${p.name}</strong></div>
+    <div class="agrid">
+      <button class="ab grn" onclick="restartP('${p.id}')">${t('restart')}</button>
+      <button class="ab red" onclick="delProj('${p.id}')">🗑 ${t('del')}</button>
+    </div></div>`: '';
+
+      const rowblk = (!fin && row) ? `<div class="rinfo"><div class="rbadge">${t('row').toUpperCase()} ${ri + 1} / ${a.length}</div>
+    <div style="font-size:12px;color:var(--text3);margin-bottom:.5rem;">${doneInRow + 1} / ${countStitches(pastilles)}</div>
+    <div style="display:flex;gap:.75rem;align-items:stretch;margin-bottom:.75rem;">
+      ${renderNextBox(pastilles, pIdx, subIdx)}
+      <div class="rinfo" style="flex:1;margin-bottom:0;padding:.75rem;display:flex;align-items:center;">
+        <div class="sdisp" style="justify-content:center;align-items:center;">${renderPastilles(pastilles, pIdx, subIdx)}</div>
+      </div>
+    </div>
+    <div class="agrid">
+      <button class="ab gold" onclick="nxtSt()">+ ${t('st')}</button>
+      <button class="ab out" onclick="prvSt()">− Annuler</button>
+     <button class="ab purp full" onclick="nxtRow()">→ ${cfg.lang === 'en' ? 'Next row' : t('row') + ' ' + t('nxt')}</button>${ri > 0 ? `<button class="ab out full" onclick="prvRow()">← ${cfg.lang === 'en' ? 'Previous row' : t('row') + ' ' + t('prv')}</button>` : ''}
+    </div>
+    <div style="display:flex;gap:8px;margin-top:.5rem;">
+      <button class="ab amb" style="flex:1;padding:12px;font-size:13px;" onclick="restartP('${p.id}')">${t('restart')}</button>
+      <button class="ab red" style="flex:1;padding:12px;font-size:13px;" onclick="delProj('${p.id}')">🗑</button>
+    </div>`: '';
+
+      document.getElementById('vbody').innerHTML = info + prog + finblk + rowblk;
+    }
+    function nxtSt() {
+      const p = curP, a = expRows(p.rows), row = a[p.currentRow || 0]; if (!row) return;
+      const ri = p.currentRow || 0;
+      const pastilles = parseStitches(row.stitches);
+      const pIdx = p.currentStitch || 0;
+      const subIdx = p.currentSubStitch || 0;
+      const pastille = pastilles[pIdx]; if (!pastille) return;
+
+      // est-ce qu'on est à la dernière maille de la dernière pastille du dernier rang ?
+      const isLastRow = ri === a.length - 1;
+      const isLastPastille = pIdx === pastilles.length - 1;
+      const isLastSub = subIdx === pastille.stitches.length - 1;
+
+      if (isLastRow && isLastPastille && isLastSub) {
+        p.currentSubStitch = (pastille.stitches.length); save(); showBravo(); return;
+      }
+
+      if (isLastSub) {
+        // passe à la pastille suivante
+        if (pIdx < pastilles.length - 1) { p.currentStitch = pIdx + 1; p.currentSubStitch = 0; }
+        else { nxtRow(); return; }
+      } else {
+        p.currentSubStitch = subIdx + 1;
+      }
+      save(); renderView();
+    }
+    function prvSt() {
+      const p = curP;
+      const subIdx = p.currentSubStitch || 0;
+      const pIdx = p.currentStitch || 0;
+      if (subIdx > 0) { p.currentSubStitch = subIdx - 1; save(); renderView(); return; }
+      if (pIdx > 0) {
+        const a = expRows(p.rows), row = a[p.currentRow || 0];
+        const pastilles = parseStitches(row.stitches);
+        p.currentStitch = pIdx - 1;
+        p.currentSubStitch = Math.max(0, pastilles[pIdx - 1].stitches.length - 1);
+        save(); renderView(); return;
+      }
+    }
+    function nxtRow() {
+      const p = curP, a = expRows(p.rows);
+      if ((p.currentRow || 0) < a.length - 1) {
+        p.currentRow = (p.currentRow || 0) + 1; p.currentStitch = 0; p.currentSubStitch = 0; save(); hapticRow(); renderView();
+      } else {
+        const lastRow = a[a.length - 1];
+        const pastilles = parseStitches(lastRow.stitches);
+        p.currentStitch = pastilles.length; p.currentSubStitch = 0; save(); showBravo();
+      }
+    } function prvRow() { const p = curP; if ((p.currentRow || 0) > 0) { p.currentRow--; p.currentStitch = 0; p.currentSubStitch = 0; save(); hapticRow(); renderView(); } } function restartP(id) { const p = projects.find(x => x.id === id); if (!p) return; p.currentRow = 0; p.currentStitch = 0; p.currentSubStitch = 0; save(); curP = p; infoOpen = true; document.getElementById('vtitle').textContent = p.name; renderView(); document.querySelectorAll('.screen').forEach(s => s.classList.remove('active')); document.getElementById('project-view').classList.add('active'); }
+    function delProj(id) {
+      showModal(t('del'), 'Cette action est irréversible.', () => {
+        projects = projects.filter(p => p.id !== id); save(); showScreen('projects');
+      }, 'project-view');
+    }
+    function doRestart() { if (!curP) return; const id = curP.id; restartP(id); }
+    function showBravo() {
+      document.getElementById('bemoji').textContent = cfg.theme === 'love' ? '💖' : '🧶';
+      document.getElementById('btitle').textContent = t('bravo');
+      document.getElementById('bsub').innerHTML = `${t('bsub')} <strong style="color:var(--gold)">${curP.name}</strong> ${cfg.theme === 'love' ? '💖' : ''}`; showScreen('bravo-screen');
+      setTimeout(() => { renderBravoPhoto(); }, 50);
+      setTimeout(confetti, 200);
+    }
+
+    // ─── CREATE ──────────────────────────────────────────────────────────────────
+    function startNewProject() {
+      editPid = null; cRows = []; cRow = []; editRowIdx = null;
+      nProj = { name: '', color: COLORS[0], notes: '', folderId: null, photos: [] };
+      document.getElementById('ctitle').textContent = t('newt');
+      renderCreate(); showScreen('create-project');
+    }
+    function startEdit(p) {
+      editPid = p.id; cRows = JSON.parse(JSON.stringify(p.rows)); cRow = []; editRowIdx = null;
+      nProj = { name: p.name, color: p.color, notes: p.notes || '', folderId: p.folderId || null, photos: [...(p.photos || [])] };
+      document.getElementById('ctitle').textContent = t('modt') + ' ' + p.name;
+      renderCreate(); showScreen('create-project');
+    }
+    function renderCreate() {
+      const body = document.getElementById('cbody');
+      const csws = COLORS.map(c => `<div class="csw${nProj.color === c ? ' sel' : ''}" style="background:${c}" title="${CNAMES[c] || c}" onclick="setCol('${c}')"></div>`).join('');
+      const favCodes = cfg.favSt || [];
+      const lsSorted = [...LS().filter(s => favCodes.includes(s.code)), ...LS().filter(s => !favCodes.includes(s.code))];
+      const sbtns = lsSorted.map(s => {
+        const fav = favCodes.includes(s.code);
+        return `<button class="sbtn" style="border:1px solid ${fav ? '#c9a96e' : 'var(--border2)'};${fav ? 'box-shadow:0 0 0 1px #c9a96e;' : ''}" onclick="addSt('${s.code}')"><span class="sym">${s.code}</span><span class="lbl">${s.full.split(' ')[0]}</span></button>`;
+      }).join(''); const summ = cRows.map((r, i) => { const { text, total } = compRow(r.stitches); return `<div class="rsum${editRowIdx === i ? ' sel' : ''}" onclick="selRow(${i})"><div><strong>${t('row')} ${i + 1}${r.repeat > 1 ? ' ×' + r.repeat : ''}</strong> : ${text}</div><div class="rtot">${total} pt${total !== 1 ? 's' : ''}</div></div>`; }).join('');
+      const edg = editRowIdx !== null;
+      const ld = liveDisp(cRow);
+      const phHTML = (nProj.photos || []).map((ph, i) => `<div class="mphitem"><img src="${ph}" class="mphimg" onclick="openLB('${ph}')"><button class="mphdel" onclick="removePhoto(${i})">✕</button></div>`).join('');
+
+      const subPanel = subMode ? `
+    <div style="background:var(--pb);border:2px dashed var(--pbr);border-radius:10px;padding:10px;margin-bottom:.75rem;">
+      <div style="font-size:11px;color:var(--pt);font-weight:700;letter-spacing:1px;text-transform:uppercase;margin-bottom:6px;">
+        ${subMode === 'en1' ? '✦ Sous-rang — En 1 maille' : '✦ Sous-rang — Motif à répéter'}
+      </div>
+      <div id="subdisp" style="display:flex;flex-wrap:wrap;gap:6px;min-height:36px;padding:8px;background:var(--bg);border-radius:6px;margin-bottom:8px;">${liveDisp(subRow)}</div>
+      ${subMode === 'rep' ? `<div style="display:flex;align-items:center;gap:8px;margin-bottom:8px;flex-wrap:wrap;">
+        <span style="font-size:12px;color:var(--text2);">Répéter :</span>
+        ${[2, 3, 4, 5, 6, 8, 10].map(n => `<button class="rapbtn" onclick="document.getElementById('subrep').value=${n}">${n}×</button>`).join('')}
+        <input class="rinp" type="number" min="2" max="99" value="2" id="subrep" style="width:52px;">
+      </div>`: ''}
+      <div style="display:flex;gap:8px;">
+        <button class="rab grn" style="flex:1;padding:10px;" onclick="validateSub()">OK</button>
+        <button class="rab red" style="flex:1;padding:10px;" onclick="cancelSub()">✕ Annuler</button>
+      </div>
+    </div>`: '';
+
+      const repBtns = `<div style="display:flex;align-items:center;gap:6px;flex-wrap:wrap;margin-top:.75rem;padding-top:.75rem;border-top:1px solid var(--border);">
+    <span style="font-size:11px;color:var(--text2);">${t('repr')} :</span>
+    ${[1, 2, 3, 5, 10, 15, 20].map(n => `<button id="repbtn-${n}" class="rapbtn" style="background:${activeRepeatBtns.has(n) ? 'var(--gold)' : 'var(--pb)'};color:${activeRepeatBtns.has(n) ? '#1a1a2e' : 'var(--pt)'};border-color:${activeRepeatBtns.has(n) ? 'var(--gold2)' : 'var(--pbr)'};" onclick="setRepeat(${n})">${n}</button>`).join('')}
+    <button class="rapbtn" style="background:var(--rb);border-color:var(--rbr);color:var(--rt);" onclick="resetRepeat()">↺</button>
+    <span id="repval" style="font-size:13px;color:var(--gold);font-weight:700;">×${pendingRepeat}</span>
+  </div>`;
+
+      body.innerHTML = `
+    <div class="fg"><label class="fl">${t('pnm')}</label><input class="fi" type="text" value="${nProj.name}" placeholder="${t('pnmph')}" oninput="nProj.name=this.value"></div>
+    <div class="fg"><label class="fl">${t('col')}</label><div class="cpick">${csws}</div><div style="font-size:12px;color:var(--text2);margin-top:6px;">${CNAMES[nProj.color] || ''}</div></div>
+    <div class="fg"><label class="fl">${t('not')}</label><textarea class="fta" placeholder="${t('notph')}" oninput="nProj.notes=this.value">${nProj.notes}</textarea></div>
+${folders.length ? `<div class="fg"><label class="fl">Dossier</label><select class="fsel" onchange="nProj.folderId=this.value||null"><option value="">${t('nofd')}</option>${folders.map(f => `<option value="${f.id}"${nProj.folderId === f.id ? ' selected' : ''}>${f.name}</option>`).join('')}</select></div>` : ''}
+    <div class="fg"><label class="fl">${t('addph')}</label><div class="mphlist">${phHTML}<div class="addph" onclick="document.getElementById('ph-inp').click()">+</div></div></div>
+    <div class="sdiv"></div>
+    ${summ ? `<div class="rsums"><div style="font-size:11px;color:var(--text3);letter-spacing:1px;text-transform:uppercase;margin-bottom:6px;">${t('clkr')}</div>${summ}</div>` : ''}
+    <div class="rbuild">
+      <div class="rbhdr"><span class="rbnbadge">${edg ? `${t('mod')} ${t('row')} ${editRowIdx + 1}` : `${t('row')} ${cRows.length + 1}`}</span><button class="rab red" onclick="clearCRow()">✕</button></div>
+      <div style="font-size:11px;color:var(--text3);margin-bottom:6px;">${cRow.length} ${t('scnt')}</div>
+      <div class="crdisp">${ld}</div>
+      ${subPanel}
+      <div class="sbtns">${sbtns}</div>
+      <div style="display:flex;gap:6px;margin-bottom:.5rem;">
+        <button class="rab amb" style="flex:1;padding:10px;font-size:12px;" onclick="startSub('en1')">✦ En 1 maille</button>
+        <button class="rab purp" style="flex:1;padding:10px;font-size:12px;" onclick="startSub('rep')">⟳ Motif répété</button>
+      </div>
+      <div class="ract">
+        <button class="rab amb" onclick="undoSt()">← ${t('undo')}</button>
+        <button class="rab grn" onclick="saveRow()">✓ ${edg ? t('updr') : t('addr')}</button>
+      </div>
+      ${!edg ? repBtns : ''}
+      ${edg ? `<div style="margin-top:.75rem;"><button class="rab red full" onclick="delRow(${editRowIdx})">🗑 ${t('delr')}</button></div>` : ''}
+    </div>
+    ${cRows.length ? `<button class="fbtn" onclick="saveProj()">${t('fin')}</button>` : ''}`;
+    }
+    function selRow(i) { editRowIdx = i; cRow = [...cRows[i].stitches]; renderCreate(); }
+    function delRow(i) { cRows.splice(i, 1); editRowIdx = null; cRow = []; renderCreate(); }
+    function setCol(c) { nProj.color = c; renderCreate(); }
+    function addSt(code) {
+      if (subMode) { addToSub(code); return; }
+      cRow.push(code);
+      const list = document.querySelector('.crdisp');
+      if (list) list.innerHTML = liveDisp(cRow);
+    }
+    function undoSt() {
+      if (subMode) { undoSub(); return; }
+      cRow.pop();
+      const list = document.querySelector('.crdisp');
+      if (list) list.innerHTML = liveDisp(cRow);
+    }
+    let activeRepeatBtns = new Set();
+    function setRepeat(n) {
+      if (activeRepeatBtns.has(n)) activeRepeatBtns.delete(n);
+      else activeRepeatBtns.add(n);
+      pendingRepeat = Math.max(1, [...activeRepeatBtns].reduce((a, b) => a + b, 0));
+      renderRepeatBtns();
+    }
+    function resetRepeat() { activeRepeatBtns = new Set(); pendingRepeat = 1; renderRepeatBtns(); }
+    function renderRepeatBtns() {
+      const el = document.getElementById('repval'); if (el) el.textContent = '×' + pendingRepeat;
+      [1, 2, 3, 5, 10, 15, 20].forEach(n => {
+        const btn = document.getElementById('repbtn-' + n);
+        if (btn) {
+          btn.style.background = activeRepeatBtns.has(n) ? 'var(--gold)' : 'var(--pb)';
+          btn.style.color = activeRepeatBtns.has(n) ? '#1a1a2e' : 'var(--pt)';
+          btn.style.borderColor = activeRepeatBtns.has(n) ? 'var(--gold2)' : 'var(--pbr)';
+        }
+      });
+    }
+
+    function startSub(mode) { subMode = mode; subRow = []; renderCreate(); }
+    function cancelSub() { subMode = null; subRow = []; renderCreate(); }
+    function addToSub(code) { subRow.push(code); renderSubDisp(); }
+    function undoSub() { subRow.pop(); renderSubDisp(); }
+    function renderSubDisp() {
+      const el = document.getElementById('subdisp');
+      if (el) el.innerHTML = liveDisp(subRow);
+    }
+    function validateSub() {
+      if (!subRow.length) return;
+      const inner = subRow.join(',');
+      let entry;
+      if (subMode === 'en1') entry = '[' + inner + '] en1';
+      else {
+        const n = parseInt(document.getElementById('subrep').value) || 2;
+        entry = n + '×[' + inner + ']';
+      }
+      cRow.push(entry);
+      subMode = null; subRow = [];
+      renderCreate();
+    }
+    function clearCRow() { cRow = []; editRowIdx = null; renderCreate(); }
+    function addGroup() {
+      const n = parseInt(document.getElementById('grpn').value) || 2;
+      const code = document.getElementById('grps').value;
+      const label = '[' + n + code + ']';
+      cRow.push(label);
+      const list = document.querySelector('.crdisp');
+      if (list) list.innerHTML = liveDisp(cRow);
+    }
+    function saveRow() {
+      if (!cRow.length) return;
+      if (editRowIdx !== null) { cRows[editRowIdx].stitches = [...cRow]; editRowIdx = null; }
+      else { cRows.push({ stitches: [...cRow], repeat: pendingRepeat || 1 }); }
+      cRow = []; subMode = null; subRow = []; pendingRepeat = 1; activeRepeatBtns = new Set(); renderCreate();
+    }
+    function saveProj() {
+      if (!nProj.name.trim()) { alert(t('pnm') + ' ?'); return; }
+      if (!cRows.length) { alert('Ajoutez au moins un rang !'); return; }
+      if (!Array.isArray(projects)) projects = [];
+      checkEgg(nProj.name);
+      if (!editPid && projects.find(p => p.name.toLowerCase() === nProj.name.trim().toLowerCase())) { alert('Un projet avec ce nom existe déjà.'); return; }
+      if (editPid) {
+        const idx = projects.findIndex(p => p.id === editPid);
+        if (idx > -1) projects[idx] = { ...projects[idx], name: nProj.name, color: nProj.color, notes: nProj.notes, rows: JSON.parse(JSON.stringify(cRows)), folderId: nProj.folderId, photos: nProj.photos || [] };
+      } else {
+        projects.push({ id: Date.now().toString(), name: nProj.name, color: nProj.color, notes: nProj.notes, rows: JSON.parse(JSON.stringify(cRows)), currentRow: 0, currentStitch: 0, currentSubStitch: 0, folderId: nProj.folderId || null, photos: nProj.photos || [], finishedPhoto: null });
+      }
+      save();
+      cRows = []; cRow = []; editPid = null;
+      nProj = { name: '', color: COLORS[0], notes: '', folderId: null, photos: [] };
+      document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+      editMode = false;
+      renderProjects();
+      document.getElementById('projects').classList.add('active');
+      updateLabels();
+    }
+
+    // ─── SETTINGS ────────────────────────────────────────────────────────────────
+    function renderSettings() {
+      document.getElementById('setbody').innerHTML = `
+    <div class="ss"><div class="sstitle">${t('theme')}</div>
+      <div class="thsel">
+        <button class="thbtn dark${cfg.theme === 'dark' ? ' act' : ''}" onclick="setTheme('dark')"><span style="font-size:20px;">🌙</span>${t('dark')}</button>
+        <button class="thbtn lght${cfg.theme === 'light' ? ' act' : ''}" onclick="setTheme('light')"><span style="font-size:20px;">☀️</span>${t('light')}</button>
+        ${cfg.love ? `<button class="thbtn love${cfg.theme === 'love' ? ' act' : ''}" onclick="setTheme('love')"><span style="font-size:20px;">💖</span>${t('love')}</button>` : ''}
+      </div>
+    </div>
+    <div class="ss"><div class="sstitle">${t('lang')}</div>
+      <div class="srow"><div><div class="slbl">Langue</div></div>
+        <select class="fsel" style="width:auto;" onchange="setLang(this.value)">
+          <option value="fr"${cfg.lang === 'fr' ? ' selected' : ''}>🇫🇷 Français</option>
+          <option value="en"${cfg.lang === 'en' ? ' selected' : ''}>🇬🇧 English</option>
+        </select>
+    </div>
+    </div>
+    <div class="ss"><div class="sstitle">${cfg.lang === 'fr' ? 'Points · Cliquer pour ajouter en favori' : 'Stitches · Click to add to favourites'}</div><div style="padding:10px 14px;display:flex;flex-direction:column;gap:6px;">
+    ${SD.map(s => {
+        const code = cfg.lang === 'fr' ? s.fr : s.en;
+        const name = cfg.lang === 'fr' ? s.nameFR : s.nameEN;
+        const fav = isFav(code);
+        return `<div onclick="toggleFav('${code}')" style="display:flex;align-items:center;gap:12px;padding:8px 12px;border-radius:8px;border:${fav ? '1px solid #c9a96e' : '1px solid var(--border)'};cursor:pointer;background:var(--bg3);transition:border-color .2s;${fav ? 'box-shadow:0 0 0 1px #c9a96e;' : ''}"><span style="font-size:14px;font-weight:700;color:${fav ? 'var(--gold)' : 'var(--text)'};min-width:36px;">${code}</span>
+        <span style="font-size:13px;color:var(--text2);flex:1;">${name}</span>
+        ${fav ? `<span style="font-size:11px;color:#c9a96e;">★</span>` : ''}
+      </div>`;
+      }).join('')}
+  </div>
+</div>
+<div class="ss"><div class="sstitle">${cfg.lang === 'fr' ? 'Options' : 'Options'}</div>
+  <div class="srow">
+    <div><div class="slbl">${cfg.lang === 'fr' ? 'Vibration au changement de rang' : 'Haptic feedback on row change'}</div>
+    <div class="sslbl">${cfg.lang === 'fr' ? 'Appareil compatible requis' : 'Requires compatible device'}</div></div>
+    <button onclick="toggleHaptic()" style="background:${cfg.haptic ? 'var(--gbr)' : 'var(--bg3)'};border:2px solid ${cfg.haptic ? 'var(--gbr)' : 'var(--border2)'};color:${cfg.haptic ? 'var(--gt)' : 'var(--text3)'};padding:6px 16px;border-radius:20px;font-family:Georgia,serif;font-size:13px;font-weight:700;cursor:pointer;">
+      ${cfg.haptic ? (cfg.lang === 'fr' ? 'ON' : 'ON') : (cfg.lang === 'fr' ? 'OFF' : 'OFF')}
+    </button>
+  </div>
+</div>
+    <div class="ss"><div class="sstitle">${t('data')}</div>
+      <div class="srow"><div><div class="slbl">${t('delall')}</div></div><button class="rab red" style="padding:8px 14px;" onclick="resetAll()">${t('delall')}</button></div>
+    </div>
+    <div style="text-align:center;padding:2rem;font-size:11px;color:var(--text3);">${t('ver')}</div>`;
+    }
+    function setTheme(v) { cfg.theme = v; save(); applyTheme(); updateLabels(); renderSettings(); }
+    function setLang(v) { cfg.lang = v; save(); updateLabels(); renderSettings(); }
+    function setDisp(v) { cfg.disp = v; save(); renderSettings(); }
+    function resetAll() {
+      showModal(t('delall'), t('delalc'), () => {
+        projects = []; folders = []; cfg = { lang: 'fr', theme: 'light', disp: 'code', love: false, favSt: [] }; save(); applyTheme(); showScreen('home');
+      }, 'settings');
+    }
+
+    // ─── INIT ─────────────────────────────────────────────────────────────────────
+    updateLabels();
+  </script>
+</body>
+
+</html>
