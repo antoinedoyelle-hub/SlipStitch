@@ -1,19 +1,21 @@
 {
   "name": "SlipStitch",
   "short_name": "SlipStitch",
+  "description": "Your crochet companion — track your projects stitch by stitch",
   "start_url": "/SlipStitch/",
+  "scope": "/SlipStitch/",
   "display": "standalone",
-  "background_color": "#1a1a2e",
-  "theme_color": "#c9a96e",
+  "background_color": "#090f15",
+  "theme_color": "#090f15",
   "orientation": "portrait",
   "icons": [
     {
-      "src": "https://via.placeholder.com/192.png/1a1a2e/c9a96e?text=SS",
+      "src": "icon-192.png",
       "sizes": "192x192",
       "type": "image/png"
     },
     {
-      "src": "https://via.placeholder.com/512.png/1a1a2e/c9a96e?text=SlipStitch",
+      "src": "icon-512.png",
       "sizes": "512x512",
       "type": "image/png"
     }
