@@ -2387,6 +2387,19 @@ ${folders.length ? `<div class="fg"><label class="fl">Dossier</label><select cla
       updateLabels();
     }
 
+    function leaveCreate() {
+      if (cRows.length || cRow.length) {
+        showModal(t('leavetit'), t('leavemsg'), () => {
+          cRows = []; cRow = []; editPid = null;
+          nProj = { name: '', color: COLORS[0], notes: '', folderId: null, photos: [] };
+          showScreen('projects');
+        }, 'create-project');
+      } else {
+        cRows = []; cRow = []; editPid = null;
+        showScreen(editPid ? 'projects' : 'home');
+      }
+    }
+
     // ─── SETTINGS ────────────────────────────────────────────────────────────────
     function renderSettings() {
       document.getElementById('setbody').innerHTML = `
