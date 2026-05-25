@@ -1874,13 +1874,13 @@
           const a = document.getElementById('bpharea');
           if (a) {
             const ph = curP.finishedPhoto;
-            a.innerHTML = `<img src="${ph}" style="width:100%;border-radius:12px;border:2px solid var(--gbr);object-fit:cover;max-height:200px;cursor:pointer;display:block;" onclick="openLB('${ph}')"><button class="bs" style="width:100%;margin-top:.5rem;padding:10px;font-size:13px;" onclick="document.getElementById('ph-fin').click()">Changer</button>`;
+            a.innerHTML = `<img src="${ph}" style="width:100%;border-radius:12px;border:2px solid var(--gbr);object-fit:cover;max-height:200px;cursor:pointer;display:block;" onclick="openLB('${ph}')"><button class="bs" style="width:100%;margin-top:.5rem;padding:10px;font-size:13px;" onclick="document.getElementById('ph-fin').click()">${cfg.lang==='en'?'Change':'Changer'}</button>`;
           }
         });
         const a = document.getElementById('bpharea');
         if (a) {
           const ph = curP.finishedPhoto;
-          a.innerHTML = `<img src="${ph}" style="width:100%;border-radius:12px;border:2px solid var(--gbr);object-fit:cover;max-height:200px;cursor:pointer;display:block;" onclick="openLB('${ph}')"><button class="bs" style="width:100%;margin-top:.5rem;padding:10px;font-size:13px;" onclick="document.getElementById('ph-fin').click()">Changer</button>`;
+          a.innerHTML = `<img src="${ph}" style="width:100%;border-radius:12px;border:2px solid var(--gbr);object-fit:cover;max-height:200px;cursor:pointer;display:block;" onclick="openLB('${ph}')"><button class="bs" style="width:100%;margin-top:.5rem;padding:10px;font-size:13px;" onclick="document.getElementById('ph-fin').click()">${cfg.lang==='en'?'Change':'Changer'}</button>`;
         }
       }; r.readAsDataURL(f);
       e.target.value = '';
@@ -1889,7 +1889,7 @@
     function renderBravoPhoto() {
       const a = document.getElementById('bpharea'); if (!a) return;
       const ph = curP && curP.finishedPhoto;
-      if (ph) a.innerHTML = `<img src="${ph}" style="width:100%;border-radius:12px;border:2px solid var(--gbr);object-fit:cover;max-height:200px;cursor:pointer;display:block;" onclick="openLB('${ph}')"><button class="bs" style="width:100%;margin-top:.5rem;padding:10px;font-size:13px;" onclick="document.getElementById('ph-fin').click()">Changer</button>`;
+      if (ph) a.innerHTML = `<img src="${ph}" style="width:100%;border-radius:12px;border:2px solid var(--gbr);object-fit:cover;max-height:200px;cursor:pointer;display:block;" onclick="openLB('${ph}')"><button class="bs" style="width:100%;margin-top:.5rem;padding:10px;font-size:13px;" onclick="document.getElementById('ph-fin').click()">${cfg.lang==='en'?'Change':'Changer'}</button>`;
       else a.innerHTML = `<button class="phupl" style="width:220px;" onclick="document.getElementById('ph-fin').click()">${t('addphf')}</button>`;
     }
 
@@ -2120,10 +2120,10 @@
     <div class="drow"><span class="dico">🎨</span><div><div class="dlbl">${t('col')}</div><div style="display:flex;align-items:center;gap:8px;margin-top:2px;"><div class="dcdot" style="background:${p.color}"></div><span class="dval">${cn}</span></div></div></div>
     ${p.notes ? `<div class="drow"><span class="dico">📝</span><div><div class="dlbl">${t('not')}</div><div class="dvalnt">${p.notes}</div></div></div>` : ''}
     ${phHTML}
-    <div class="drow"><span class="dico">📊</span><div><div class="dlbl">${t('refsect')}</div><div class="dval">${a.length} rangs · ${total} mailles</div></div></div></div></div>`;
+    <div class="drow"><span class="dico">📊</span><div><div class="dlbl">${t('refsect')}</div><div class="dval">${a.length} ${cfg.lang==='en'?'rows':'rangs'} · ${total} ${cfg.lang==='en'?'stitches':'mailles'}</div></div></div></div></div>`;
 
       const prog = `<div class="gprog"><div class="plbl"><span>${t('glob')}</span><strong>${pct}%</strong></div><div class="pbar2"><div class="pbfill2" style="width:${pct}%"></div></div>
-  <div style="display:flex;justify-content:space-between;margin-top:.5rem;font-size:11px;color:var(--text3);"><span>${done}/${total} ${t('st')}s</span><span>${left} rang${left !== 1 ? 's' : ''}</span></div></div>`;
+  <div style="display:flex;justify-content:space-between;margin-top:.5rem;font-size:11px;color:var(--text3);"><span>${done}/${total} ${t('st')}s</span><span>${left} ${cfg.lang==='en'?'row':'rang'}${left !== 1 ? 's' : ''}</span></div></div>`;
 
       const finblk = fin ? `<div class="fovl"><div class="fovle">${cfg.theme === 'love' ? '💖' : '🎉'}</div>
     <div class="fovlt">${t('bravo')}</div>
