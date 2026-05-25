@@ -1586,7 +1586,7 @@
 
   <div id="modal" class="modwrap">
     <div class="mod">
-      <h3 id="modtitle">Confirmer</h3>
+      <h3 id="modtitle"></h3>
       <p id="modmsg"></p>
       <div id="modextra"></div>
       <div class="modbtns">
@@ -1744,6 +1744,7 @@
       setT('lbackproj', '← ' + (cfg.lang === 'en' ? 'Back to projects' : 'Retour aux projets'));
       setT('lrestart', cfg.lang === 'en' ? 'Start over' : 'Recommencer');
       setT('lfinished', cfg.lang === 'en' ? 'Finished 🎉' : 'Terminé 🎉');
+      setT('modtitle', cfg.lang==='en'?'Confirm':'Confirmer');
     }
     function setT(id, v) { const el = document.getElementById(id); if (el) el.textContent = v; }
 
@@ -2195,7 +2196,7 @@
     }
     function prvRow() { const p = curP; if ((p.currentRow || 0) > 0) { p.currentRow--; p.currentStitch = 0; p.currentSubStitch = 0; save(); hapticRow(); renderView(); } } function restartP(id) { const p = projects.find(x => x.id === id); if (!p) return; p.currentRow = 0; p.currentStitch = 0; p.currentSubStitch = 0; save(); curP = p; infoOpen = true; document.getElementById('vtitle').textContent = p.name; renderView(); document.querySelectorAll('.screen').forEach(s => s.classList.remove('active')); document.getElementById('project-view').classList.add('active'); }
     function delProj(id) {
-      showModal(t('del'), 'Cette action est irréversible.', () => {
+      showModal(t('del'), cfg.lang==='en'?'This action is irreversible.':'Cette action est irréversible.', () => {
         projects = projects.filter(p => p.id !== id); save(); showScreen('projects');
       }, 'project-view');
     }
